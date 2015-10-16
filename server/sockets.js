@@ -13,6 +13,18 @@ io.on('connection', function (socket) {
   /*
   / Published Data
   */
+  
+  // Add Item
+  socket.on('add:pub', function (data) {
+    
+    console.log("Pub item added: ", data.item.id);
+    
+    // breadcast to all other clients deleted element's id
+    socket.broadcast.emit('add:pub:out', {
+      item : data.item
+    });
+  });
+  
   // Delete Item
   socket.on('delete:pub', function (data) {
     

@@ -1,5 +1,19 @@
 <h2>This is the Published View</h2>
 
+<button type="button" class="btn btn-default btn-lg" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add' }}</button>
+<div ng-show="vm.showAddForm">
+	<form name="newItemForm">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<input class="form-control" type="text" ng-model="vm.newItem.id" placeholder="ID" required/>
+			</div>
+			<div class="panel-body">
+			</div>
+		</div>
+		<button ng-click="vm.addPub(vm.newItem)" type="submit" class="btn btn-danger btn-lg">Add</button>
+	</form>
+</div>
+
 <div ng-repeat="publishedItem in vm.publishedData">
 	
 	<div class="panel panel-primary">
