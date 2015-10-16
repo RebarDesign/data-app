@@ -127,7 +127,7 @@
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 				
 			// set x domain the number of elements
-			x.domain(postData.map(function(d) { return d.index; }));
+			x.domain(array.map(function(d) { return d.index; }));
 			
 			// set y domain, the highest post value
 			y.domain([0, yMax]);
@@ -163,10 +163,10 @@
 				.attr("height", function(d) { return height - y(d.total); })
 				// info on hover
 				.append("svg:title")
-   				.text(function(d) { return 'Post ' + d.index + ' : ' + d.total + ' at ' + parseDate(d.timestamp); });
+   				.text(function(d) { return 'Post ' + d.index + ' : ' + d.total; });
 			
 			// monitor checkbox
-			d3.select("input").on("change", change);
+			d3.select("#sort-box").on("change", change);
 			
 			function change() {
 				
@@ -174,6 +174,8 @@
 				var sortTimeout = setTimeout(function() {
 					d3.select("input").property("checked", true).each(change);
 				}, 100);
+				
+				clearTimeout(sortTimeout);
 				
 				// Copy-on-write since tweens are evaluated after a delay.
 				// order either by post number or index
@@ -183,13 +185,14 @@
 					.map(function(d) { return d.index; }))
 					.copy();
 					
-				// sort by timetamp
+				// sort by index
+				// they can be sorted by timestamp, but then the null timestamps have to be removed
 				svg.selectAll(".bar")
-					.sort(function(a, b) { return x0(a.timestamp) - x0(b.timestamp); });
+					.sort(function(a, b) { return x0(a.index) - x0(b.index); });
 					
 				// make relay relative to element index
 				var transition = svg.transition().duration(750),
-					delay = function(d) { return d.index * 5; };
+					delay = function(d, i) { return i * 5; };
 					
 				
 				transition.selectAll(".bar")
