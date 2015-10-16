@@ -151,6 +151,16 @@ Creating angular structure:
   
   Server will broadcast to all other connected clients, using socket.emit.broadcast
   
+  Created basic ui add, update and delete functionality in controller. 
+  
+  *Note* Only the session information is a/u/d from the ui
+  
+  Moving on to Reached Data
+  
+  Will create D3 chart in controller. 
+  
+  First have to get and parse the data
+  
   
   
 

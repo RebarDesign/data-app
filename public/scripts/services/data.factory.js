@@ -10,7 +10,7 @@
 		
 		var factory = {
 			getPublished:getPublished,
-			getReached:getReached
+			getReach:getReach
 		};
 		
 		return factory;
@@ -34,7 +34,21 @@
 			
 		}
 	
-		function getReached() {
+		function getReach() {
+			
+			return $http.get('/api/reach')
+				.then(getReachComplete)
+				.catch(getReachFailed);
+	
+			function getReachComplete(response) {
+				//* ghetto-debugging *//
+				$log.log(response);
+				return response;
+			}
+	
+			function getReachFailed(error) {
+				$log.error('ERROR::getReach Failed ' + error.data);
+			}
 		}
 	}
 })();
