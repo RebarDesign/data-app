@@ -165,9 +165,7 @@ Creating angular structure:
   
   Plot the index on X and the impressions on Y
   
-  
-  
-
+  Starting work on the UI elements
         
      
     
