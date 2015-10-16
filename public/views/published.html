@@ -1,5 +1,22 @@
 <h2>This is the Published View</h2>
 
 <div ng-repeat="publishedItem in vm.publishedData">
-	{{publishedItem.id}}
+	
+	
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3>{{publishedItem.id}}</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<tbody>
+					<tr ng-repeat="(detailProp, detailVal) in publishedItem.content">
+						<th scope="row">{{detailProp}}</th>
+						<td>{{detailVal}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
 </div>
