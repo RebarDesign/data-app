@@ -161,6 +161,10 @@ Creating angular structure:
   
   First have to get and parse the data
   
+  Create a new array with the values we want. 
+  
+  Plot the index on X and the impressions on Y
+  
   
   
 

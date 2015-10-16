@@ -18,6 +18,32 @@
 				width = 1200 - margin.left - margin.right,
 				height = 500 - margin.top - margin.bottom;
 				
+		// ordinal scale for X ( post index )
+		var x = d3.scale.ordinal()
+			.rangeRoundBands([0, width], .1);
+		
+		// linear scale for Y post impressions
+		var y = d3.scale.linear()
+			.range([height, 0]);
+		
+		// x axis on the bottom
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.orient("bottom");
+		
+		// y axis on the left with 10 ticks
+		var yAxis = d3.svg.axis()
+			.scale(y)
+			.orient("left")
+			.ticks(10);
+			
+		// find our element and append size it
+		var svg = d3.select("#bar-chart")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				
 		// var parseDate = d3.time.format("%X");
 		
 		// actions
@@ -99,32 +125,6 @@
 			
 			//* fancy-debugging *//
 			// debugger
-			
-			// ordinal scale for X ( post index )
-			var x = d3.scale.ordinal()
-				.rangeRoundBands([0, width], .1);
-			
-			// linear scale for Y post impressions
-			var y = d3.scale.linear()
-				.range([height, 0]);
-			
-			// x axis on the bottom
-			var xAxis = d3.svg.axis()
-				.scale(x)
-				.orient("bottom");
-			
-			// y axis on the left with 10 ticks
-			var yAxis = d3.svg.axis()
-				.scale(y)
-				.orient("left")
-				.ticks(10);
-				
-			// find our element and append size it
-			var svg = d3.select("#bar-chart")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 				
 			// set x domain the number of elements
 			x.domain(array.map(function(d) { return d.index; }));

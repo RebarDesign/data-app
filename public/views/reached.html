@@ -2,7 +2,9 @@
 
 <label><input type="checkbox" id="sort-box"> Sort values</label>
 
-<svg id="bar-chart"></svg>{{vm.sortText}}
+<div class="row">
+	<svg id="bar-chart"></svg>{{vm.sortText}}
+</div>
 
 <div ng-repeat="reachItem in vm.reachData">
 	<pre>
