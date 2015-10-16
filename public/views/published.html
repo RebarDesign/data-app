@@ -1,5 +1,6 @@
 <h2>This is the Published View</h2>
 
+<!-- new item -->
 <button type="button" class="btn btn-default btn-lg" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add' }}</button>
 <div ng-show="vm.showAddForm">
 	<form name="newItemForm">
@@ -14,11 +15,15 @@
 	</form>
 </div>
 
+<!-- published item list -->
 <div ng-repeat="publishedItem in vm.publishedData">
 	
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3>{{publishedItem.id}}</h3>
+			<h3 ng-hide="publishedItem.edit" ng-bind="publishedItem.id" style="text-overflow: ellipsis;overflow: hidden;">ID</h3>
+			<div ng-show="publishedItem.edit">
+				<input class="form-control" type="text" ng-model="publishedItem.id"/>
+			</div>
 		</div>
 		<div class="panel-body">
 			<table class="table table-hover">
@@ -30,8 +35,10 @@
 				</tbody>
 			</table>
 			<div class="btn-group pull-right" role="group" aria-label="Action Button">
-				<button ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
-				<button ng-click="" type="button" class="btn btn-default">Edit</button>
+				<button ng-hide="publishedItem.edit" ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
+				<button ng-hide="publishedItem.edit" ng-click="publishedItem.edit = true" type="button" class="btn btn-default">Edit</button>
+				<button ng-show="publishedItem.edit" ng-click="publishedItem.edit = false"  type="button" class="btn btn-danger">Cancel</button>
+				<button ng-show="publishedItem.edit" ng-click="vm.updatePub($index, publishedItem)" type="button" class="btn btn-default">Save</button>
 			</div>
 		</div>
 	</div>

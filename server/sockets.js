@@ -14,16 +14,6 @@ io.on('connection', function (socket) {
   / Published Data
   */
   
-  // Add Item
-  socket.on('add:pub', function (data) {
-    
-    console.log("Pub item added: ", data.item.id);
-    
-    // breadcast to all other clients deleted element's id
-    socket.broadcast.emit('add:pub:out', {
-      item : data.item
-    });
-  });
   
   // Delete Item
   socket.on('delete:pub', function (data) {
@@ -35,6 +25,29 @@ io.on('connection', function (socket) {
       id: data.id
     });
     
+  });
+  
+  // Add Item
+  socket.on('add:pub', function (data) {
+    
+    console.log("Pub item added: ", data.item.id);
+    
+    // breadcast to all other clients added element
+    socket.broadcast.emit('add:pub:out', {
+      item : data.item
+    });
+  });
+  
+  // Update Item
+  socket.on('update:pub', function (data) {
+    
+    console.log("Pub item updated: ", data.id);
+    
+    // breadcast to all other clients added element
+    socket.broadcast.emit('update:pub:out', {
+      id   : data.id,
+      item : data.item
+    });
   });
   
   // Disconnect
