@@ -18,7 +18,7 @@
 				width = 1200 - margin.left - margin.right,
 				height = 500 - margin.top - margin.bottom;
 				
-		var parseDate = d3.time.format("%X");
+		// var parseDate = d3.time.format("%X");
 		
 		// actions
 		activate();
@@ -137,9 +137,18 @@
 				.attr("class", "x axis")
 				.attr("transform", "translate(0," + height + ")")
 				.attr("font-size", "7px")
-				.call(xAxis)
-				.append("text")
-				.text("Post");
+				.call(xAxis);
+			
+			// x axis label
+			svg.append("text")
+				.attr("class", "x axis")
+				.attr("text-anchor", "end")
+				.attr("x", width / 2)
+				.attr("y", height+ 25)
+				.text("Post Item");
+				
+			//TODO Style the label 
+				
 				
 			// style the y axis
 			svg.append("g")
@@ -169,6 +178,7 @@
 			d3.select("#sort-box").on("change", change);
 			
 			function change() {
+				
 				
 				// delay the redraw of the elements
 				var sortTimeout = setTimeout(function() {
