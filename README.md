@@ -99,6 +99,15 @@ I will attept to configure the chart parameters and rendering in the controller 
 
 Created a server folder to hold the api and io modules, as well as the JSON blob assets.
 
+With basic server functionality - server creation, basic socket connection moving on to client side.
+
+Starting work on the front end - Default folder is /public
+
+    cd public 
+    
+    bower init 
+    
+Initialize bower in public folder, for instalation of cliend dependencies: Angular, Bootstrap, D3
 
 
 
