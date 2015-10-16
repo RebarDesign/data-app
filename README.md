@@ -136,7 +136,15 @@ Creating angular structure:
   Create a main controller
   
   Create Services. We need a service to get the published data and the reached data.
-  But first we need to create the get api. 
+  But first we need to create the get api.
+  
+  Created a api routes for getting the json information
+  
+  Created Service to get data using the api
+  
+  Testing out socket functionality with a simple name emit, also testing out Express 4 + socket IO integration
+  
+  First , create a service for the sockets in the front end  
   
 
         
