@@ -1,6 +1,7 @@
 @import '../bower_components/bootstrap/less/bootstrap.less';
 
-@link-color: #00B7FF;
+@link-color: steelblue;
+@bar-color : #0277BD;
 @default-padding:  25px;
 @logo-height : 30px;
 
@@ -21,7 +22,7 @@ a {
 // Nav
 
 .rd-logo {
-    height : 30px;    
+    height : @logo-height;    
 } 
 
 .navbar-nav {
@@ -31,4 +32,28 @@ a {
         }
     }
 }
+
+// Bar Chart
     
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.area {
+  fill: @bar-color;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.bar {
+  fill: @bar-color;
+}
+
+.bar:hover {
+  fill: lighten(@bar-color, 30%);
+}

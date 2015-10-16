@@ -1086,12 +1086,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #00B7FF;
+  color: steelblue;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #0080b3;
+  color: #315a7d;
   text-decoration: underline;
 }
 a:focus {
@@ -3438,7 +3438,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #fff;
 }
 .btn-link {
-  color: #00B7FF;
+  color: steelblue;
   font-weight: normal;
   border-radius: 0;
 }
@@ -3459,7 +3459,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #0080b3;
+  color: #315a7d;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -4034,7 +4034,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a:hover,
 .nav .open > a:focus {
   background-color: #eeeeee;
-  border-color: #00B7FF;
+  border-color: steelblue;
 }
 .nav .nav-divider {
   height: 1px;
@@ -4751,7 +4751,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   padding: 6px 12px;
   line-height: 1.42857143;
   text-decoration: none;
-  color: #00B7FF;
+  color: steelblue;
   background-color: #fff;
   border: 1px solid #ddd;
   margin-left: -1px;
@@ -4772,7 +4772,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > li > a:focus,
 .pagination > li > span:focus {
   z-index: 3;
-  color: #0080b3;
+  color: #315a7d;
   background-color: #eeeeee;
   border-color: #ddd;
 }
@@ -4970,7 +4970,7 @@ a.badge:focus {
 }
 .list-group-item.active > .badge,
 .nav-pills > .active > a > .badge {
-  color: #00B7FF;
+  color: steelblue;
   background-color: #fff;
 }
 .list-group-item > .badge {
@@ -5043,7 +5043,7 @@ a.badge:focus {
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #00B7FF;
+  border-color: steelblue;
 }
 .thumbnail .caption {
   padding: 9px;
@@ -6769,15 +6769,33 @@ body {
   font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 a {
-  color: #00B7FF;
+  color: steelblue;
 }
 a:hover,
 a:focus {
-  color: #33c5ff;
+  color: #699bc4;
 }
 .rd-logo {
   height: 30px;
 }
 .navbar-nav li a {
   text-transform: uppercase;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.area {
+  fill: #0277BD;
+}
+.x.axis path {
+  display: none;
+}
+.bar {
+  fill: #0277BD;
+}
+.bar:hover {
+  fill: #5bc0fd;
 }
