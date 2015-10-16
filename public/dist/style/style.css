@@ -6775,3 +6775,9 @@ a:hover,
 a:focus {
   color: #33c5ff;
 }
+.rd-logo {
+  height: 30px;
+}
+.navbar-nav li a {
+  text-transform: uppercase;
+}
