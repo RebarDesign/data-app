@@ -94,6 +94,7 @@ I will attept to configure the chart parameters and rendering in the controller 
 
     npm install
     
+    npm install socket.io --save
     
     
     
