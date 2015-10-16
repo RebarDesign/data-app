@@ -9,7 +9,7 @@
 	function AppConfig($routeProvider) {
 		$routeProvider
 			.when('/published', {
-				templateUrl: 'published.html',
+				templateUrl: 'views/published.html',
 				controller: 'PublishedController',
 				controllerAs: 'vm'
 			})
