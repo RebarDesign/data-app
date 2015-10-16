@@ -23,7 +23,8 @@
 				.catch(getPublishedFailed);
 	
 			function getPublishedComplete(response) {
-				$log.log(response);
+				//* ghetto-debugging *//
+				// $log.log(response);
 				return response;
 			}
 	

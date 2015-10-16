@@ -9,7 +9,7 @@
 	function PublishedController(dataFactory) {
 		var vm = this;
 		
-		vm.PublishedData = [];
+		vm.publishedData = [];
 
 		activate();
 
@@ -18,7 +18,9 @@
 		function activate() {
 			
 			return getPublishedData().then(function (data){
-				console.log(data);
+				vm.publishedData = data.data;
+				//* ghetto-debugging *//
+				console.log(vm.publishedData);
 			});
 			
 		 }
