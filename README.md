@@ -84,6 +84,12 @@ I will attept to configure the chart parameters and rendering in the controller 
 
     //TODO - Add more info as the work progresses
     
+#### Workflow
+
+    git init
+    
+    npm init
+    
     
 ## How to use
 

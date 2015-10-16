@@ -1,0 +1,21 @@
+{
+  "name": "data-app",
+  "version": "1.0.0",
+  "description": "Coding assignment for Front End Developent assesment using Angular, Express, D3 and REST",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RebarDesign/data-app.git"
+  },
+  "keywords": [
+    "Angular",
+    "Express",
+    "D3",
+    "REST"
+  ],
+  "author": "Sebastian Florian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RebarDesign/data-app/issues"
+  },
+  "homepage": "https://github.com/RebarDesign/data-app#readme"
+}
