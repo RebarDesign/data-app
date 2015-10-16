@@ -14,9 +14,13 @@
 		
 		// d3
 		var d3 = $window.d3;
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+				width = 1200 - margin.left - margin.right,
+				height = 500 - margin.top - margin.bottom;
+				
+		var parseDate = d3.time.format("%X");
 		
 		// actions
-		
 		activate();
 
 		////////////////
@@ -29,7 +33,9 @@
 				// clean up array
 				vm.reachData = cleanArray(vm.reachData);
 				//* ghetto-debugging *//
-				$log.info('OK:: getReachData(): ', vm.reachData);
+				// $log.info('OK:: getReachData(): ', vm.reachData);
+				drawBars(vm.reachData);
+				
 			})
 		
 		}
@@ -84,6 +90,16 @@
 			// $log.log('Cleaned ', newArray);
 			
 			return newArray;
+		}
+		
+		function drawBars(array){
+			
+			// get highest post value
+			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
+			
+			//* fancy-debugging *//
+			// debugger
+			
 		}
 	}
 })();
