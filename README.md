@@ -121,8 +121,21 @@ In order to compile Less to Css will install Gulp task manager, with a gulp-less
     
 Create gulpfile.js 
     
-    
-    
+Import bootstrap
+
+Run less to css task
+
+Creating angular structure:
+
+  - app.module.js
+  Define app module
+  - app.config.js 
+  Configure angular router. We need 2 routes : Publish and Reach, which will be ui views
+  
+  
+
+        
+     
     
 ## How to use
 
