@@ -144,7 +144,14 @@ Creating angular structure:
   
   Testing out socket functionality with a simple name emit, also testing out Express 4 + socket IO integration
   
-  First , create a service for the sockets in the front end  
+  First , create a service for the sockets in the front end 
+  Add socket 'on' and 'emit' on the server side
+  
+  Server emits the same message, but with the appendix *:out* ex: delete:pub from client , delete:pub:out from server 
+  
+  Server will broadcast to all other connected clients, using socket.emit.broadcast
+  
+  
   
 
         

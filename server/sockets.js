@@ -18,6 +18,11 @@ io.on('connection', function (socket) {
     
     console.log("Pub item deleted ", data.id);
     
+    // breadcast to all other clients deleted element's id
+    socket.broadcast.emit('delete:pub:out', {
+      id: data.id
+    });
+    
   });
   
   // Disconnect

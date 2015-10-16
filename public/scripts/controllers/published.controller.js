@@ -14,6 +14,13 @@
 		vm.deletePub 	= deletePub;
 
 		activate();
+		
+		// sockets
+		
+		socketsFactory.on('delete:pub:out', function (data) {
+			console.log("Emit Delete Element: ", data.id);
+			vm.publishedData.splice(data.id, 1);
+		});
 
 		////////////////
 
