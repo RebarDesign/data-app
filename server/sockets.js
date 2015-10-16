@@ -10,6 +10,15 @@ io.on('connection', function (socket) {
     name: '@SebFlorian'
   });
   
+  /*
+  / Published Data
+  */
+  // Delete Item
+  socket.on('delete:pub', function (data) {
+    
+    console.log("Pub item deleted ", data.id);
+    
+  });
   
   // Disconnect
   socket.on('disconnect', function(){
