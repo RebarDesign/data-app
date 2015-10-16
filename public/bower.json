@@ -1,0 +1,25 @@
+{
+  "name": "Data App",
+  "version": "1.0.0",
+  "homepage": "https://github.com/RebarDesign/data-app",
+  "authors": [
+    "Sebastian Florian <rebardesigndk@gmail.com>"
+  ],
+  "description": "Coding assignment for Front End Developent assesment using Angular, Express, D3 and REST",
+  "main": "app.module.js",
+  "moduleType": [],
+  "keywords": [
+    "Angular",
+    "Bootstrap",
+    "D3",
+    "REST"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
