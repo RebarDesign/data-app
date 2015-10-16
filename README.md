@@ -130,7 +130,11 @@ Creating angular structure:
   - app.module.js
   Define app module
   - app.config.js 
-  Configure angular router. We need 2 routes : Publish and Reach, which will be ui views
+  Configure angular router. We need 2 routes : Publish and Reach, which will be nested ui views
+  - controllers
+  Create controllers for each view
+  Create a main controller
+  
   
   
 

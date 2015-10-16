@@ -6,23 +6,30 @@
 	<link rel="stylesheet" type="text/css" href="dist/style/style.css">
 </head>
 <body>
+	<!-- ng-app -->
 	<div ng-app="app">
 		
-		<a href="#/published">Published</a>
-		<a href="#/reached">Reached</a>
-		  
-		  
-		<h1><%= title %></h1>
-		<div class="container" ng-view></div>
-	</div>
-	
-	<!-- Footer -->
-	<footer class="footer">
-		<div class="container">
-			<p class="text-muted pull-right">Made with coffee by me.</p>
+		<!-- Main Controller div -->
+		<div ng-controller="MainController as vm">
+			
+				<a href="#/published">Published</a>
+				<a href="#/reached">Reached</a>
+				
+				<h1><%= title %></h1>
+				<div class="container" ng-view></div>
+			
+			<!-- Footer -->
+			<footer class="footer">
+				<div class="container">
+					<p class="text-muted pull-right">Made with coffee by me.</p>
+				</div>
+			</footer>
+			<!-- End Footer -->
 		</div>
-	</footer>
-	<!-- End Footer -->
+	<!-- End Main Controller div -->
+	</div>
+	<!-- End ng-app -->
+	
 	<!-- Scripts -->
     
     <!--- vendor -->
@@ -45,6 +52,7 @@
     <script src="scripts/config/app.config.js"></script>
 	
 	<!-- Controllers -->
+	<script src="scripts/controllers/main.controller.js"></script>
     <script src="scripts/controllers/published.controller.js"></script>
     <script src="scripts/controllers/reach.controller.js"></script>
 </body>
