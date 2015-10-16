@@ -5,12 +5,15 @@
 		.module('app')
 		.controller('ReachController', ReachController);
 
-	ReachController.$inject = ['dataFactory', '$log'];
-	function ReachController(dataFactory, $log) {
+	ReachController.$inject = ['dataFactory', '$log', '$window'];
+	function ReachController(dataFactory, $log, $window) {
 		var vm = this;
 		
 		// reach array
 		vm.reachData = [];
+		
+		// d3
+		var d3 = $window.d3;
 		
 		// actions
 		
@@ -24,9 +27,9 @@
 				// assign data to reachData array
 				vm.reachData = data.data.response;
 				// clean up array
-				cleanArray(vm.reachData);
+				vm.reachData = cleanArray(vm.reachData);
 				//* ghetto-debugging *//
-				// $log.info('OK:: getReachData(): ', vm.reachData);
+				$log.info('OK:: getReachData(): ', vm.reachData);
 			})
 		
 		}
@@ -49,7 +52,7 @@
 			var newArray = array.map(function(obj, index){ 
 				
 				//* ghetto-debugging *//
-				$log.log('Obj ', obj);
+				// $log.log('Obj ', obj);
 				
 				// how we want the object to look
 				var item = {
@@ -78,7 +81,7 @@
 			});
 			
 			//* ghetto-debugging *//
-			$log.log('Cleaned ', newArray);
+			// $log.log('Cleaned ', newArray);
 			
 			return newArray;
 		}
