@@ -114,6 +114,15 @@ Initialize bower in public folder, for instalation of cliend dependencies: Angul
 
 *Note* There are a few angular-socket boilerplates, but using them would only show I can follow instructions, so for the sake of demonstrations, I just used the basic socket.io scripts
 
+
+In order to compile Less to Css will install Gulp task manager, with a gulp-less component ( in the root directory ) 
+
+    npm install gulp gulp-less
+    
+Create gulpfile.js 
+    
+    
+    
     
 ## How to use
 
