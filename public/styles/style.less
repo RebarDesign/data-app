@@ -1,0 +1,18 @@
+@import '../bower_components/bootstrap';
+
+@link-color: #00B7FF;
+@default-padding:  25px;
+
+body {
+  padding: 2 * @default-padding;
+  font: 10px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: @link-color;
+  
+  &:hover,
+  &:focus {
+        color: lighten(@link-color, 50%);
+    }
+}
