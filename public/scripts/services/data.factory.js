@@ -8,12 +8,16 @@
 	dataFactory.$inject = ['dependency1'];
 	function dataFactory(dependency1) {
 		var factory = {
-			exposedFn:exposedFn
+			getPublished:getPublished,
+			getReached:getReached
 		};
 		
 		return factory;
 
 		////////////////
-		function exposedFn() { }
-	}
+		function getPublished() { }
+		}
+	
+		function getReached() { }
+		}
 })();

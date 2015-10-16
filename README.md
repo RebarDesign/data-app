@@ -135,7 +135,8 @@ Creating angular structure:
   Create controllers for each view
   Create a main controller
   
-  Create Services. We need a service to get the published data and the reached data. 
+  Create Services. We need a service to get the published data and the reached data.
+  But first we need to create the get api. 
   
 
         
