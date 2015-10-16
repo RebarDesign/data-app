@@ -18,12 +18,14 @@
 
 		////////////////
 
-		function activate() { }
+		function activate() { 
 		
 			return getReachData().then(function (data) {
 				vm.reachData = data.data.response;
-			$log.info('OK:: getReachData(): ', vm.reachData);
-		})
+				$log.info('OK:: getReachData(): ', vm.reachData);
+			})
+		
+		}
 		
 		function getReachData(){
 			return dataFactory.getReach();
