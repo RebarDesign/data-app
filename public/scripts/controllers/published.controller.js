@@ -5,8 +5,8 @@
 		.module('app')
 		.controller('PublishedController', PublishedController);
 
-	PublishedController.$inject = ['dataFactory', 'socketFactory'];
-	function PublishedController(dataFactory, socketFactory) {
+	PublishedController.$inject = ['dataFactory', 'socketsFactory'];
+	function PublishedController(dataFactory, socketsFactory) {
 		var vm = this;
 		
 		vm.publishedData = [];
@@ -34,7 +34,7 @@
 		 function deletePub(index) {
 			//  delete item from array
 			vm.publishedData.splice(index,1);
-			socketFactory.emit('delete:pub', { id: index });
+			socketsFactory.emit('delete:pub', { id: index });
 		 }
 	}
 })();
