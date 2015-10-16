@@ -90,6 +90,12 @@ I will attept to configure the chart parameters and rendering in the controller 
     
     npm init
     
+    express --ejs
+
+    npm install
+    
+    
+    
     
 ## How to use
 
@@ -99,6 +105,11 @@ Since using Express 4, the start of the app will be done using
 
 ```javascript
   node bin/www
+  
+  // or
+  
+  npm start
+  
 ```
     
 *Note*: I am aware that the task description states the start of the app should be "node app.js" but I feel that more Express 3 functionality. It's easier to separate the modules, and combine them in www/bin, or reusing them somewhere else. 
