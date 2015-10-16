@@ -6781,6 +6781,9 @@ a:focus {
 .navbar-nav li a {
   text-transform: uppercase;
 }
+.rd-chart {
+  overflow: visible !important;
+}
 .axis path,
 .axis line {
   fill: none;

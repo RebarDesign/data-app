@@ -26,6 +26,10 @@
 		var y = d3.scale.linear()
 			.range([height, 0]);
 		
+		// get color range 
+		var color = d3.scale.ordinal()
+    	.range(["#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+		
 		// x axis on the bottom
 		var xAxis = d3.svg.axis()
 			.scale(x)
@@ -36,13 +40,6 @@
 			.scale(y)
 			.orient("left")
 			.ticks(10);
-			
-		// find our element and append size it
-		var svg = d3.select("#bar-chart")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
-			.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 				
 		// var parseDate = d3.time.format("%X");
 		
@@ -61,7 +58,7 @@
 				//* ghetto-debugging *//
 				// $log.info('OK:: getReachData(): ', vm.reachData);
 				drawBars(vm.reachData);
-				
+				drawStackedBars(vm.reachData);
 			})
 		
 		}
@@ -120,6 +117,13 @@
 		
 		function drawBars(array){
 			
+			// find our element and append size it
+			var svg = d3.select("#bar-chart")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			
 			// get highest post value
 			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
 			
@@ -175,7 +179,7 @@
    				.text(function(d) { return 'Post ' + d.index + ' : ' + d.total; });
 			
 			// monitor checkbox
-			d3.select("#sort-box").on("change", change);
+			d3.select("input").on("change", change);
 			
 			function change() {
 				
@@ -214,6 +218,106 @@
 					.selectAll("g")
 					.delay(delay);
 			}
+		}
+		
+		function drawStackedBars(array){
+			
+			// find our element and append size it
+			var svg = d3.select("#stack-chart")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			
+			// get highest post value
+			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
+			
+			//* fancy-debugging *//
+			// debugger
+			
+			// we only need the impression properties
+			color.domain(d3.keys(array[0]).filter(function(key) { return (key !== 'timestamp' && key !== 'index' && key !== 'total'); }));
+			
+			
+			array.forEach(function(d) {
+				var y0 = 0;
+				// stack the values
+				d.impressions = color.domain().map(function(name) { return {name: name, y0: y0, y1 : y0 += +d[name]}; });
+			});
+			
+			//* ghetto-debugging *//
+			$log.log('With Impression ', array);
+			
+			array.sort(function(a, b) { return b.total - a.total; });
+				
+			// set x domain the number of elements
+			x.domain(array.map(function(d) { return d.index; }));
+			
+			// set y domain, the highest post value
+			y.domain([0, yMax]);
+			
+			// style the x axis
+			svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.attr("font-size", "7px")
+				.call(xAxis);
+			
+			// x axis label
+			svg.append("text")
+				.attr("class", "x axis")
+				.attr("text-anchor", "end")
+				.attr("x", width / 2)
+				.attr("y", height+ 25)
+				.text("Post Item");
+				
+			//TODO Style the label 
+				
+				
+			// style the y axis
+			svg.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+				.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", 6)
+				.attr("dy", ".71em")
+				.style("text-anchor", "end")
+				.text("Impressions");
+				
+			// draw the bars
+			var impressions = svg.selectAll(".bar")
+				.data(array)
+				.enter().append("g")
+				.attr("class", "g")
+				.attr("transform", function(d) { return "translate(" + x(d.index) + ",0)"; });
+				
+			impressions.selectAll("rect")
+				.data(function(d) { return d.impressions; })
+				.enter().append("rect")
+				.attr("width", x.rangeBand())
+				.attr("y", function(d) { return y(d.y1); })
+				.attr("height", function(d) { return y(d.y0) - y(d.y1); })
+				.style("fill", function(d) { return color(d.name); });
+			
+			var legend = svg.selectAll(".legend")
+				.data(color.domain().slice().reverse())
+				.enter().append("g")
+				.attr("class", "legend")
+				.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+			
+			legend.append("rect")
+				.attr("x", width - 18)
+				.attr("width", 18)
+				.attr("height", 18)
+				.style("fill", color);
+			
+			legend.append("text")
+				.attr("x", width - 24)
+				.attr("y", 9)
+				.attr("dy", ".35em")
+				.style("text-anchor", "end")
+				.text(function(d) { return d; });
 		}
 	}
 })();
