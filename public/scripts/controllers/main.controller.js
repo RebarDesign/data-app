@@ -5,10 +5,15 @@
 		.module('app')
 		.controller('MainController', MainController);
 
-	MainController.$inject = ['$scope'];
-	function MainController($scope) {
+	MainController.$inject = ['socketsFactory'];
+	function MainController(socketsFactory) {
 		var vm = this;
 		
+		vm.name = '..waiting';
+		
+		socketsFactory.on('send:name', function(data){
+			vm.name = data.name;
+		});
 
 		activate();
 
