@@ -96,7 +96,12 @@ I will attept to configure the chart parameters and rendering in the controller 
     
     npm install socket.io --save
     
-    
+
+Created a server folder to hold the api and io modules, as well as the JSON blob assets.
+
+
+
+
     
 ## How to use
 
