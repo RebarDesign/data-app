@@ -5,8 +5,8 @@
 		.module('app')
 		.controller('PublishedController', PublishedController);
 
-	PublishedController.$inject = ['dataService'];
-	function PublishedController(dataService) {
+	PublishedController.$inject = ['dataFactory'];
+	function PublishedController(dataFactory) {
 		var vm = this;
 		
 		vm.PublishedData = [];
@@ -24,7 +24,7 @@
 		 }
 		 
 		 function getPublishedData() {
-			 return dataService.getPublished();
+			 return dataFactory.getPublished();
 		 }
 	}
 })();
