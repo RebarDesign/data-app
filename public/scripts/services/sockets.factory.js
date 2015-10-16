@@ -3,19 +3,31 @@
 
 	angular
 		.module('app')
-		.factory('socketsFactory', sockets);
+		.factory('socketsFactory', socketsFactory);
 
-	socketsFactory.$inject = ['$log'];
-	function socketsFactory($log) {
-		var service = {
+	socketsFactory.$inject = ['$rootScope', '$window'];
+	function socketsFactory($rootScope, $window) {
+		// assign to window object
+		var io = $window.io;
+		// connect to port 3000 when Factory is called
+		var socket = io.connect('http://localhost:3000');
+		
+		var factory = {
 			on:on,
 			emit:emit
 		};
 		
-		return service;
+		return factory;
 
 		////////////////
-		function on() { }
+		function on(eventName, callback) {
+			socket.on(eventName, function () {  
+				var args = arguments;
+				$rootScope.$apply(function () {
+					callback.apply(socket, args);
+				});
+			});
+		}
 		
 		function emit() { }
 	}
