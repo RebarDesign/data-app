@@ -10,6 +10,8 @@
 		var vm = this;
 		
 		vm.publishedData = [];
+		
+		vm.deletePub 	= deletePub;
 
 		activate();
 
@@ -27,6 +29,10 @@
 		 
 		 function getPublishedData() {
 			 return dataFactory.getPublished();
+		 }
+		 
+		 function deletePub(index) {
+			//  delete item from array
 		 }
 	}
 })();

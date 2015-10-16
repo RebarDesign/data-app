@@ -2,7 +2,6 @@
 
 <div ng-repeat="publishedItem in vm.publishedData">
 	
-	
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3>{{publishedItem.id}}</h3>
@@ -16,6 +15,10 @@
 					</tr>
 				</tbody>
 			</table>
+			<div class="btn-group pull-right" role="group" aria-label="Action Button">
+				<button ng-click=""  type="button" class="btn btn-danger">Delete</button>
+				<button ng-click="" type="button" class="btn btn-default">Edit</button>
+			</div>
 		</div>
 	</div>
 	
