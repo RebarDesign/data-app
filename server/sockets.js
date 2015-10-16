@@ -10,6 +10,12 @@ io.on('connection', function (socket) {
     name: '@SebFlorian'
   });
   
+  
+  // Disconnect
+  socket.on('disconnect', function(){
+    console.log('Disconnected: ', socket.id);
+  });
+  
 });
 
 module.exports = io;

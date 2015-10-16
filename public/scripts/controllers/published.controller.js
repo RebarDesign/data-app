@@ -20,7 +20,7 @@
 			return getPublishedData().then(function (data){
 				vm.publishedData = data.data;
 				//* ghetto-debugging *//
-				console.log(vm.publishedData);
+				console.info('OK::getPublishedData(): ',vm.publishedData);
 			});
 			
 		 }
