@@ -109,7 +109,10 @@ Starting work on the front end - Default folder is /public
     
 Initialize bower in public folder, for instalation of cliend dependencies: Angular, Bootstrap, D3
 
+    bower install angular angular-route bootstrap d3 --save
+    
 
+*Note* There are a few angular-socket boilerplates, but using them would only show I can follow instructions, so for the sake of demonstrations, I just used the basic socket.io scripts
 
     
 ## How to use
