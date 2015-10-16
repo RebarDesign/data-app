@@ -13,6 +13,11 @@
 				controller: 'PublishedController',
 				controllerAs: 'vm'
 			})
+			.when('/reached', {
+				templateUrl: 'views/reached.html',
+				controller: 'ReachController',
+				controllerAs: 'vm'
+			})
 			.otherwise({
 				redirectTo: '/published'
 			});;
