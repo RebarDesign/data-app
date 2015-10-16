@@ -7,14 +7,14 @@
   1. [Task](#task)
   1. [Technologies](#technologies)
   1. [Approach](#approach)
-  1. [How to use](#use)
+  1. [How to use](#how-to-use)
   1. [Comments](#comments)
 
 ## Task
 
 ### Data sources:
 
-[Publishing](https://jsonblob.com/api/jsonBlob/55683150e4b03d338bd86998)
+[Publishing](https://jsonblob.com/api/jsonBlob/55683150e4b03d338bd86998)  
 [Reach data](http://jsonblob.com/api/jsonBlob/5208a709e4b002188ed03bdd)
 
 ### Description:
@@ -42,17 +42,17 @@
 
 ### Sever:
 
-  - NodeJS
-  - ExpressJS (Version 4.*) & ejs
-  - Socket.IO
+  - [NodeJS](http://nodejs.org/)
+  - [ExpressJS](http://expressjs.com/) (Version 4.*)
+  - [Socket.IO](http://socket.io/)
 
 ### Client:
 
-  - Angular
+  - [Angular](https://angularjs.org/)
      -- Angular-Router 
      -- Angular-Socket-IO
-  - Gulp (Less Task) 
-  - d3js
+  - [Gulp](http://gulpjs.com/) (gulp-less) 
+  - [D3](http://d3js.org/)
   
 ## Approach
 
