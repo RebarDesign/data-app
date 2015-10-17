@@ -28,7 +28,7 @@
 		
 		// get color range 
 		var color = d3.scale.ordinal()
-    	.range(["#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    	.range(["#FFC107", "#d0743c", "#607D8B"]);
 		
 		// x axis on the bottom
 		var xAxis = d3.svg.axis()
@@ -298,7 +298,8 @@
 				.attr("width", x.rangeBand())
 				.attr("y", function(d) { return y(d.y1); })
 				.attr("height", function(d) { return y(d.y0) - y(d.y1); })
-				.style("fill", function(d) { return color(d.name); });
+				.style("fill", function(d) { return color(d.name); })
+				.attr("class", function(d) { return d.name; });
 			
 			var legend = svg.selectAll(".legend")
 				.data(color.domain().slice().reverse())
@@ -306,11 +307,92 @@
 				.attr("class", "legend")
 				.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 			
+			var organicVisibility = false;
+			var paidVisibility = false;
+			var viralVisibility = false;
+			
 			legend.append("rect")
 				.attr("x", width - 18)
 				.attr("width", 18)
 				.attr("height", 18)
-				.style("fill", color);
+				.attr("id", color)
+				.style("fill", color)
+				// lighten the bars on hover
+				.on('mouseover', function(d){
+					switch (d3.select(this).attr("id")){
+						// organic
+						case "#FFC107":
+							d3.selectAll(".viral").style("opacity", '0.5');
+							d3.selectAll(".paid").style("opacity", '0.5');
+						break;
+						// paid
+						case "#d0743c":
+							d3.selectAll(".organic").style("opacity", '0.5');
+							d3.selectAll(".viral").style("opacity", '0.5');
+						break;
+						// viral
+						case "#607D8B":
+							d3.selectAll(".organic").style("opacity", '0.5');
+							d3.selectAll(".paid").style("opacity", '0.5');
+						break;
+					}
+				})
+				.on('mouseleave', function(d){
+					switch (d3.select(this).attr("id")){
+						// organic
+						case "#FFC107":
+							d3.selectAll(".viral").style("opacity", '1');
+							d3.selectAll(".paid").style("opacity", '1');
+						break;
+						// paid
+						case "#d0743c":
+							d3.selectAll(".organic").style("opacity", '1');
+							d3.selectAll(".viral").style("opacity", '1');
+						break;
+						// viral
+						case "#607D8B":
+							d3.selectAll(".organic").style("opacity", '1');
+							d3.selectAll(".paid").style("opacity", '1');
+						break;
+					}
+				})
+				// toggle visibility of bars 
+				// TODO: More elegantly
+				.on("click", function(){
+					
+					switch (d3.select(this).attr("id")){
+						// organic
+						case "#FFC107":
+							var active   = organicVisibility ? false : true,
+							newOpacity = active ? 0 : 1;
+							// Hide or show the elements
+							d3.selectAll(".viral").style("opacity", newOpacity);
+							d3.selectAll(".paid").style("opacity", newOpacity);
+							// Update whether or not the elements are active
+							organicVisibility = active;
+						break;
+						// paid
+						case "#d0743c":
+							var active   = paidVisibility ? false : true,
+							newOpacity = active ? 0 : 1;
+							// Hide or show the elements
+							d3.selectAll(".organic").style("opacity", newOpacity);
+							d3.selectAll(".viral").style("opacity", newOpacity);
+							// Update whether or not the elements are active
+							paidVisibility = active;
+						break;
+						// viral
+						case "#607D8B":
+							var active   = viralVisibility ? false : true,
+							newOpacity = active ? 0 : 1;
+							// Hide or show the elements
+							d3.selectAll(".organic").style("opacity", newOpacity);
+							d3.selectAll(".paid").style("opacity", newOpacity);
+							// Update whether or not the elements are active
+							viralVisibility = active;
+						break;
+					}
+				});
 			
 			legend.append("text")
 				.attr("x", width - 24)
