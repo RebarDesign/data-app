@@ -41,7 +41,7 @@
 			.orient("left")
 			.ticks(10);
 				
-		// var parseDate = d3.time.format("%X");
+		var parseDate = d3.time.format("%X");
 		
 		// actions
 		activate();
@@ -70,15 +70,16 @@
 		// manipulate array to my liking
 		function cleanArray(array){
 			
-			// remove empty objects
-			// var newArray = array.filter(function (n) {
-			// 	return n.post_impressions != undefined;
-			// })
-			
 			//* ghetto-debugging *//
-			// $log.log('Cleaned ', newArray);
+			// $log.log('Cleaned ', array);
 			
-			var newArray = array.map(function(obj, index){ 
+			// remove empty objects
+			var newArray = array.filter(function (n) {
+				return n.hasOwnProperty("post_impressions");
+			})
+			
+			
+			newArray = newArray.map(function(obj, index){ 
 				
 				//* ghetto-debugging *//
 				// $log.log('Obj ', obj);
@@ -176,7 +177,7 @@
 				.attr("height", function(d) { return height - y(d.total); })
 				// info on hover
 				.append("svg:title")
-   				.text(function(d) { return 'Post ' + d.index + ' : ' + d.total; });
+   				.text(function(d) { return 'Post ' + d.index + ' : ' + d.total + ' at ' + parseDate(d.timestamp);});
 			
 			// monitor checkbox
 			d3.select("input").on("change", change);
