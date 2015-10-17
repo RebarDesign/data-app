@@ -316,24 +316,26 @@
 				.attr("width", 18)
 				.attr("height", 18)
 				.attr("id", color)
+				.style("cursor", "pointer")
+				.style("cursor", "hand") 
 				.style("fill", color)
 				// lighten the bars on hover
 				.on('mouseover', function(d){
 					switch (d3.select(this).attr("id")){
 						// organic
 						case "#FFC107":
-							d3.selectAll(".viral").style("opacity", '0.5');
-							d3.selectAll(".paid").style("opacity", '0.5');
+							d3.selectAll(".viral").style("opacity", '0.3');
+							d3.selectAll(".paid").style("opacity", '0.3');
 						break;
 						// paid
 						case "#d0743c":
-							d3.selectAll(".organic").style("opacity", '0.5');
-							d3.selectAll(".viral").style("opacity", '0.5');
+							d3.selectAll(".organic").style("opacity", '0.3');
+							d3.selectAll(".viral").style("opacity", '0.3');
 						break;
 						// viral
 						case "#607D8B":
-							d3.selectAll(".organic").style("opacity", '0.5');
-							d3.selectAll(".paid").style("opacity", '0.5');
+							d3.selectAll(".organic").style("opacity", '0.3');
+							d3.selectAll(".paid").style("opacity", '0.3');
 						break;
 					}
 				})
