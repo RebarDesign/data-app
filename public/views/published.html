@@ -17,7 +17,13 @@
 
 <!-- published item list -->
 <div class="row">
-	<rd-published class="col-md-6" ng-repeat="publishedItem in vm.publishedData"></rd-publish>
+	<div ng-repeat="publishedItem in vm.publishedData">
+		
+		<!--correct block height display problem-->
+		<div ng-if="$index % 2 == 0" class="clearfix"></div>
+		
+		<rd-published class="col-md-6"></rd-publish>
+	</div>
 </div>
 	
 	<!--<div class="panel panel-primary">
