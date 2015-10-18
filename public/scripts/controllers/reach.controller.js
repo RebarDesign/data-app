@@ -27,7 +27,7 @@
 		
 		// actions
 		vm.addReach			= addReach;
-		vm.updateChart		= updateChart;
+		vm.addReachItem 	= addReachItem;
 		
 		// d3
 		var d3 = $window.d3;
@@ -65,6 +65,42 @@
 				
 		var parseDate = d3.time.format('%X');
 		
+		// find our element and append size it
+		var svg = d3.select('#stack-chart')
+			.attr('width', width + margin.left + margin.right)
+			.attr('height', height + margin.top + margin.bottom)
+			.append('g')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+			
+		// style the x axis
+		svg.append('g')
+			.attr('class', 'x axis')
+			.attr('transform', 'translate(0,' + height + ')')
+			.attr('font-size', '7px')
+			.call(xAxis);
+		
+		// x axis label
+		svg.append('text')
+			.attr('class', 'x axis')
+			.attr('text-anchor', 'end')
+			.attr('x', width / 2)
+			.attr('y', height+ 25)
+			.text('Post Item');
+			
+		//TODO Style the label 
+			
+			
+		// style the y axis
+		svg.append('g')
+			.attr('class', 'y axis')
+			.call(yAxis)
+			.append('text')
+			.attr('transform', 'rotate(-90)')
+			.attr('y', 6)
+			.attr('dy', '.71em')
+			.style('text-anchor', 'end')
+			.text('Impressions');
+		
 		// actions
 		activate();
 		
@@ -74,8 +110,9 @@
 		socketsFactory.on('add:reach:out', function (data) {
 			//* ghetto-debugging *//
 			$log.log('Emit Add Reach Element', data.item);
+			vm.reachData = addReachItem(data.item , vm.reachData);
 			// update array
-			updateChart(data.item);
+			updateChart(vm.reachData);
 		});
 
 		////////////////
@@ -87,7 +124,7 @@
 				vm.reachData = cleanArray(data);
 				//* ghetto-debugging *//
 				// $log.info('OK:: getReachData(): ', vm.reachData);
-				drawStackedBars();
+				drawChart(vm.reachData);
 			})
 		
 		}
@@ -147,75 +184,33 @@
 			return newArray;
 		}
 		
-		function drawStackedBars(){
-			
-			// find our element and append size it
-			var svg = d3.select('#stack-chart')
-				.attr('width', width + margin.left + margin.right)
-				.attr('height', height + margin.top + margin.bottom)
-				.append('g')
-				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+		function drawChart(array){
 			
 			// get highest post value
-			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
+			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
 			
 			//* fancy-debugging *//
 			// debugger
 			
-			// we only need the impression properties
-			color.domain(d3.keys(vm.reachData[0]).filter(function(key) { return (key !== 'timestamp' && key !== 'index' && key !== 'total'); }));
 			
-			
-			vm.reachData.forEach(function(d) {
-				var y0 = 0;
-				// stack the values
-				d.impressions = color.domain().map(function(name) { return {name: name, y0: y0, y1 : y0 += +d[name]}; });
-			});
+			// divide impression properties for bar height
+			addImpressionProperties(array);
 			
 			//* ghetto-debugging *//
-			$log.log('With Impression ', vm.reachData);
+			// $log.log('With Impression ', array);
 			
 			// sort by value
-			vm.reachData.sort(function(a, b) { return b.total - a.total; });
+			array.sort(function(a, b) { return b.total - a.total; });
 				
 			// set x domain the number of elements
-			x.domain(vm.reachData.map(function(d) { return d.index; }));
+			x.domain(array.map(function(d) { return d.index; }));
 			
 			// set y domain, the highest post value
 			y.domain([0, yMax]);
-			
-			// style the x axis
-			svg.append('g')
-				.attr('class', 'x axis')
-				.attr('transform', 'translate(0,' + height + ')')
-				.attr('font-size', '7px')
-				.call(xAxis);
-			
-			// x axis label
-			svg.append('text')
-				.attr('class', 'x axis')
-				.attr('text-anchor', 'end')
-				.attr('x', width / 2)
-				.attr('y', height+ 25)
-				.text('Post Item');
-				
-			//TODO Style the label 
-				
-				
-			// style the y axis
-			svg.append('g')
-				.attr('class', 'y axis')
-				.call(yAxis)
-				.append('text')
-				.attr('transform', 'rotate(-90)')
-				.attr('y', 6)
-				.attr('dy', '.71em')
-				.style('text-anchor', 'end')
-				.text('Impressions');
 				
 			// draw the bars
 			var impressions = svg.selectAll('.bar')
-				.data(vm.reachData)
+				.data(array)
 				.enter().append('g')
 				.attr('class', 'bar')
 				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
@@ -350,7 +345,7 @@
 
 				// Copy-on-write since tweens are evaluated after a delay.
 				// order either by post value or index
-				var x0 = x.domain(vm.reachData.sort(this.checked
+				var x0 = x.domain(array.sort(this.checked
 					? function(a, b) { return a.index - b.index; }
 					: function(a, b) { return b.total - a.total; })
 					.map(function(d) { return d.index; }))
@@ -369,6 +364,31 @@
 					.selectAll('g.bar')
 					.delay(delay);
 			}
+		}
+		
+		function updateChart(array) {
+			
+			addImpressionProperties(array);
+			
+			var impressions = svg.selectAll('.bar')
+				.data(array, function(d) { return d; })
+				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
+			
+			impressions.selectAll('rect')
+				.data(function(d) { return d.impressions; })
+				.enter().append('rect')
+				.attr('width', x.rangeBand())
+				.attr('y', function(d) { return y(d.y1); })
+				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
+				.style('fill', function(d) { return color(d.name); })
+				// set rect class to it's color for manipulation
+				.attr('class', function(d) { return d.name; })
+				// tooltip info
+				.append('svg:title')
+   				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);})
+				.transition()
+      				.duration(750)
+				
 		}
 		
 		function toggleAddForm() {
@@ -393,18 +413,26 @@
 			$log.log('Added Element');
 		 }
 		 
-		 function updateChart(item) { 		
-			item.index = vm.reachData.length;						
-			vm.reachData.push(item);
+		 function addReachItem(item , array) { 		
+			//  give item last index
+			item.index = array.length;						
+			array.push(item);
+			 //* ghetto-debugging *// 
+			$log.log('Updated Array', array);
 			
-			vm.reachData.forEach(function(d) {
+			return array;
+		 }
+		 
+		 function addImpressionProperties(array) {
+			// we only need the impression properties
+			color.domain(d3.keys(array[0]).filter(function (key) { return (key !== 'timestamp' && key !== 'index' && key !== 'total' && key !== 'impressions');}));
+
+			array.forEach(function (d) {
 				var y0 = 0;
 				// stack the values
-				d.impressions = color.domain().map(function(name) { return {name: name, y0: y0, y1 : y0 += +d[name]}; });
+				d.impressions = color.domain().map(function (name) { return { name: name, y0: y0, y1: y0 += +d[name] }; });
 			});
-			
-			 //* ghetto-debugging *// 
-			$log.log('Updated Array', vm.reachData);
 		 }
+		 
 	}
 })();
