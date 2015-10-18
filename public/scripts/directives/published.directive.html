@@ -7,44 +7,78 @@
 	</div>
 	<div class="row panel-body">
 		
-		<div class="col-md-4">
-			
-			<!--item thumbnail-->
-			<div class="thumbnail">
-				<a href="{{publishedItem.content.media.url}}" target="new"><img data-ng-src="{{publishedItem.content.media.url}}" alt="{{publishedItem.content.media.url}}" style="height:100px;"></a>
+			<div class="col-md-4">
+				
+				<!--item thumbnail-->
+				<div ng-hide="editable" class="thumbnail">
+					<a href="{{publishedItem.content.media.url}}" target="new"><img data-ng-src="{{publishedItem.content.media.url}}" alt="{{publishedItem.content.media.fileName}}" style="height:100px;"></a>
+				</div>
+				<p>
+					<input ng-show="editable" type="text" ng-model="publishedItem.content.media.url" placeholder="paste url here"/>
+				</p>
+				
+				<!--basic item info-->
+				<b>Status:</b>
+				<p ng-show="!editable" ng-bind="publishedItem.status">{{publishedItem.status}}</p>
+				<p><input ng-show="editable" type="text" ng-model="publishedItem.status"/></p>
+				<b>Type:</b>
+				<p ng-show="!editable" ng-bind="publishedItem.content.postType"> {{publishedItem.content.postType}}</p>
+				<p><input ng-show="editable" type="text" ng-model="publishedItem.content.postType"/></p>
+				<b>Scheduled:</b>
+				<p ng-show="!editable" ng-bind="publishedItem.scheduled"></p>
+				<p><input ng-show="editable" type="text" ng-model="publishedItem.scheduled"/></p>
 			</div>
 			
-			<!--basic item info-->
-			<b>Status:</b>
-			<p ng-show="!editable" ng-bind="publishedItem.status">{{publishedItem.status}}</p>
-			<p><input ng-show="editable" type="text" ng-model="publishedItem.status"/></p>
-			<b>Type:</b>
-			<p ng-show="!editable" ng-bind="publishedItem.content.postType"> {{publishedItem.content.postType}}</p>
-			<p><input ng-show="editable" type="text" ng-model="publishedItem.content.postType"/></p>
-			<b>Scheduled:</b>
-			<p ng-show="!editable" ng-bind="publishedItem.scheduled"></p>
-			<p><input ng-show="editable" type="text" ng-model="publishedItem.scheduled"/></p>
-		</div>
-		
-		<div class="col-md-4">
-			<table class="table table-hover" >
-				<tbody>
-					<tr ng-repeat="(detailProp, detailVal) in publishedItem.content">
-						<th scope="row" ng-bind="detailProp">/th>
-						<td ng-bind="detailVal"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		
-		<div class="col-md-4">
-			<div class="btn-group pull-right" role="group" aria-label="Action Button">
-				<button ng-hide="editable" ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
-				<button ng-hide="editable" ng-click="editable = true" type="button" class="btn btn-default">Edit</button>
-				<button ng-show="editable" ng-click="editable = false"  type="button" class="btn btn-danger">Cancel</button>
-				<button ng-show="editable" ng-click="vm.updatePub($index, publishedItem)" type="button" class="btn btn-default">Save</button>
+			<div class="col-md-8">
+				
+				<div class="row">
+					<div class="col-md-12">
+						<label>Message:</label><br/>
+						<h5 ng-show="!editable" ng-bind="publishedItem.content.message"></h5>
+						<textarea ng-show="editable" type="text" ng-model="publishedItem.content.message"/>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<ul>
+							<li>
+								<label>Network: </label><span ng-show="!editable" ng-bind="publishedItem.content.network"></span>
+								<input ng-show="editable" ng-model="publishedItem.content.network" type="text">
+							</li>
+							<li>
+								<label>Post Type: </label><span ng-show="!editable" ng-bind="publishedItem.content.postType"></span>
+								<input ng-show="editable" ng-model="publishedItem.content.postType" type="text">
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-6">
+						<!--geo data-->
+						<div ng-hide="editable" ng-repeat="(geoProp, geoItem) in publishedItem.geo">
+							<b>{{geoProp}} : </b><span ng-repeat="geoSubItem in geoItem">{{geoSubItem.value}}</span>
+						</div>
+					</div>
+				</div>
+				<!--panel content bottom-->
+				<div class="row">
+					<!--panel action buttons-->
+					<div class="col-md-6">
+						<a ng-hide="editable" ng-repeat="tag in publishedItem.tags track by $index" role="presentation"><em>{{tag}}</em>  </a>
+					</div>
+					<div class="col-md-6 pull-right">
+						<div class="btn-group" role="group" aria-label="Action Button">
+							<button ng-hide="editable" ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
+							<button ng-hide="editable" ng-click="editable = true" type="button" class="btn btn-default">Edit</button>
+							<button ng-show="editable" ng-click="vm.updatePub($index, publishedItem); editable = false" type="button" class="btn btn-danger">Save</button>
+							<button ng-show="editable" ng-click="editable = false"  type="button" class="btn btn-default">Cancel</button>
+						</div>
+					</div>
+					<!--end panel action buttons-->
+				</div>
+				<!--end panel content bottom-->
 			</div>
+			<!--end panel right side-->
 		</div>
-	</div>
+		<!--end panel content top-->
 </div>
 	

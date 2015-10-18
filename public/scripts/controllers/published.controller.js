@@ -115,8 +115,6 @@
 		 }
 		 
 		 function updatePub(index , item) {
-			// close edit mode
-			item.edit = false;
 			// update array with item
 			vm.publishedData[index] = item;
 			// emit item and index
