@@ -50,6 +50,21 @@ io.on('connection', function (socket) {
     });
   });
   
+  /*
+  / Reach Data
+  */
+  
+  // Add Item
+  socket.on('add:reach', function (data) {
+    
+    console.log("Reach item added: ", data.item);
+    
+    // breadcast to all other clients added element
+    socket.broadcast.emit('add:reach:out', {
+      item : data.item
+    });
+  });
+  
   // Disconnect
   socket.on('disconnect', function(){
     console.log('Disconnected: ', socket.id);

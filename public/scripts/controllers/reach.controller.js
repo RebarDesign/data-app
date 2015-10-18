@@ -65,6 +65,18 @@
 		
 		// actions
 		activate();
+		
+		// sockets
+		
+		// listen to deleted item
+		socketsFactory.on('delete:reach:out', function (data) {
+			//* ghetto-debugging *//
+			$log.log('Emit Add Reach Element', data);
+			// update array
+			vm.reachData.push(data.item);
+			// draw chart
+			drawStackedBars(vm.reachData);
+		});
 
 		////////////////
 
