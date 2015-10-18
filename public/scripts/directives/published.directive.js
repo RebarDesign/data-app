@@ -16,15 +16,12 @@
 			link: link,
 			restrict: 'EA',
 			// inherit parent scope
-			scope: {
-			itemData: '='
-			}
+			scope: true
 		};
 		return directive;
 		
 		function link(scope, element, attrs) {
 			scope.editable = false;
-			scope.item = scope.itemData;
 		}
 	}
 })();

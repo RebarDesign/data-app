@@ -166,6 +166,8 @@ Creating angular structure:
   Plot the index on X and the impressions on Y
   
   Starting work on the UI elements
+  
+  Move to published page, and implement directives
         
      
     
