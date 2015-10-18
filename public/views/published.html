@@ -16,7 +16,9 @@
 <!-- published item list -->
 <div ng-repeat="publishedItem in vm.publishedData">
 	
-	<div class="panel panel-primary">
+	<rd-published item-data="publishedItem"></rd-published>
+	
+	<!--<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 ng-hide="publishedItem.edit" ng-bind="publishedItem.id" style="text-overflow: ellipsis;overflow: hidden;">ID</h3>
 			<div ng-show="publishedItem.edit">
@@ -39,6 +41,6 @@
 				<button ng-show="publishedItem.edit" ng-click="vm.updatePub($index, publishedItem)" type="button" class="btn btn-default">Save</button>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	
 </div>

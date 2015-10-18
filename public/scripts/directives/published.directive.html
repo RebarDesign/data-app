@@ -1,0 +1,25 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 ng-hide="editable" ng-bind="item.id" style="text-overflow: ellipsis;overflow: hidden;">ID</h3>
+		<div ng-show="editable">
+			<input class="form-control" type="text" ng-model="item.id"/>
+		</div>
+	</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<tbody>
+				<tr ng-repeat="(detailProp, detailVal) in item.content">
+					<th scope="row">{{detailProp}}</th>
+					<td>{{detailVal}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="btn-group pull-right" role="group" aria-label="Action Button">
+			<button ng-hide="editable" ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
+			<button ng-hide="editable" ng-click="editable = true" type="button" class="btn btn-default">Edit</button>
+			<button ng-show="editable" ng-click="editable = false"  type="button" class="btn btn-danger">Cancel</button>
+			<button ng-show="editable" ng-click="vm.updatePub($index, item)" type="button" class="btn btn-default">Save</button>
+		</div>
+	</div>
+</div>
+	
