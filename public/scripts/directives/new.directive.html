@@ -1,0 +1,31 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<input class="form-control" type="text" ng-model="vm.newItem.id"/>
+	</div>
+	<div class="row panel-body">
+		<div class="col-md-6">
+			
+			<!--item thumbnail-->
+			<b>Media:</b>
+			<p><input type="text" ng-model="vm.newItem.content.media.url" placeholder="paste url here"/></p>
+			<!--basic item info-->
+			<b>Status:</b>
+			<p><input type="text" ng-model="vm.newItem.status"/></p>
+			<b>Type:</b>
+			<p><input type="text" ng-model="vm.newItem.content.postType"/></p>
+			<b>Scheduled:</b>
+			<p><input type="text" ng-model="vm.newItem.scheduled"/></p>
+		</div>
+		
+		<div class="col-md-6">
+			
+			<b>Message:</b><br/>
+			<textarea  type="text" ng-model="vm.newItem.content.message"/><br/>
+			<b>Network: </b>
+			<p><input  ng-model="vm.newItem.content.network" type="text"></p>
+			<b>Post Type: </b>
+			<p><input ng-model="vm.newItem.content.postType" type="text"></p>
+		</div>
+	</div>
+</div>
+	

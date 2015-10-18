@@ -41,21 +41,15 @@
 				
 				<div class="row">
 					<div class="col-md-6">
-						<ul>
-							<li>
-								<label>Network: </label><span ng-show="!editable" ng-bind="publishedItem.content.network"></span>
-								<input ng-show="editable" ng-model="publishedItem.content.network" type="text">
-							</li>
-							<li>
-								<label>Post Type: </label><span ng-show="!editable" ng-bind="publishedItem.content.postType"></span>
-								<input ng-show="editable" ng-model="publishedItem.content.postType" type="text">
-							</li>
-						</ul>
+						<b>Network: </b><p ng-show="!editable" ng-bind="publishedItem.content.network"></p>
+						<p><input ng-show="editable" ng-model="publishedItem.content.network" type="text"></p>
+						<b>Post Type: </b><p ng-show="!editable" ng-bind="publishedItem.content.postType"></p>
+						<p><input ng-show="editable" ng-model="publishedItem.content.postType" type="text"></p>
 					</div>
 					<div class="col-md-6">
 						<!--geo data-->
 						<div ng-hide="editable" ng-repeat="(geoProp, geoItem) in publishedItem.geo">
-							<b>{{geoProp}} : </b><span ng-repeat="geoSubItem in geoItem">{{geoSubItem.value}}</span>
+							<b style="text-transform: capitalize">{{geoProp}} : </b><p ng-repeat="geoSubItem in geoItem">{{geoSubItem.value}}</p>
 						</div>
 					</div>
 				</div>

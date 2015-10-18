@@ -1,19 +1,16 @@
 <!-- new item -->
 <div class="row">
-	<button type="button" class="btn btn-default btn-lg" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add' }}</button>
-	<div ng-show="vm.showAddForm">
-		<form name="newItemForm">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<input class="form-control" type="text" ng-model="vm.newItem.id" placeholder="ID" required/>
-				</div>
-				<div class="panel-body">
-				</div>
-			</div>
+	<div class="col-md-6 col-md-offset-3">
+		<button type="button" class="btn btn-default btn-block" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add' }}</button>
+		
+		<div ng-show="vm.showAddForm">
+			<rd-new-published></rd-new-published>
 			<button ng-click="vm.addPub(vm.newItem)" type="submit" class="btn btn-danger btn-lg">Add</button>
-		</form>
+		</div>
 	</div>
 </div>
+
+<hr>
 
 <!-- published item list -->
 <div class="row">
@@ -22,33 +19,6 @@
 		<!--correct block height display problem-->
 		<div ng-if="$index % 2 == 0" class="clearfix"></div>
 		
-		<rd-published class="col-md-6"></rd-publish>
+		<rd-published class="col-md-6"></rd-published>
 	</div>
-</div>
-	
-	<!--<div class="panel panel-primary">
-		<div class="panel-heading">
-			<h3 ng-hide="publishedItem.edit" ng-bind="publishedItem.id" style="text-overflow: ellipsis;overflow: hidden;">ID</h3>
-			<div ng-show="publishedItem.edit">
-				<input class="form-control" type="text" ng-model="publishedItem.id"/>
-			</div>
-		</div>
-		<div class="panel-body">
-			<table class="table table-hover">
-				<tbody>
-					<tr ng-repeat="(detailProp, detailVal) in publishedItem.content">
-						<th scope="row">{{detailProp}}</th>
-						<td>{{detailVal}}</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="btn-group pull-right" role="group" aria-label="Action Button">
-				<button ng-hide="publishedItem.edit" ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
-				<button ng-hide="publishedItem.edit" ng-click="publishedItem.edit = true" type="button" class="btn btn-default">Edit</button>
-				<button ng-show="publishedItem.edit" ng-click="publishedItem.edit = false"  type="button" class="btn btn-danger">Cancel</button>
-				<button ng-show="publishedItem.edit" ng-click="vm.updatePub($index, publishedItem)" type="button" class="btn btn-default">Save</button>
-			</div>
-		</div>
-	</div>-->
-	
 </div>

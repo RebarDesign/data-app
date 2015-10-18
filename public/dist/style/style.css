@@ -6775,6 +6775,9 @@ a:hover,
 a:focus {
   color: #699bc4;
 }
+hr {
+  padding: 25px;
+}
 .rd-logo {
   height: 30px;
 }
