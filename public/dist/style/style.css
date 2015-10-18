@@ -6790,15 +6790,9 @@ a:focus {
   stroke: #000;
   shape-rendering: crispEdges;
 }
-.area {
-  fill: #0277BD;
-}
 .x.axis path {
   display: none;
 }
-.bar {
-  fill: #0277BD;
-}
 .bar:hover {
-  fill: #5bc0fd;
+  opacity: 0.5;
 }
