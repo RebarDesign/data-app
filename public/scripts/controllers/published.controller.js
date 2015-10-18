@@ -12,28 +12,28 @@
 		// empty array to hold publised data
 		vm.publishedData = [];
 		
-		// empty publish itme
+		// empty published item
 		vm.emptyItem	= {
-			"id": "",
-			"content": {
-				"message": "",
-				"id": "",
-				"network": "",
-				"postType": "",
-				"media": {
-					"fileName": "",
-					"url": ""
+			'id': '',
+			'content': {
+				'message': '',
+				'id': '',
+				'network': '',
+				'postType': '',
+				'media': {
+					'fileName': '',
+					'url': ''
 				}
 			},
-			"tags": [],
-			"status": "",
-			"channels": [],
-			"scheduled": "",
-			"geo": {
-			"countries": [],
-			"languages": [],
-			"cities": [],
-			"regions": []
+			'tags': [],
+			'status': '',
+			'channels': [],
+			'scheduled': '',
+			'geo': {
+			'countries': [],
+			'languages': [],
+			'cities': [],
+			'regions': []
 			}
 		}
 		
@@ -54,7 +54,7 @@
 		// listen to deleted item
 		socketsFactory.on('delete:pub:out', function (data) {
 			//* ghetto-debugging *//
-			$log.log("Emit Delete Element: ", data.id);
+			$log.log('Emit Delete Element: ', data.id);
 			//  delete item from array
 			vm.publishedData.splice(data.id, 1);
 		});
@@ -62,7 +62,7 @@
 		// listen to added item
 		socketsFactory.on('add:pub:out', function (data) {
 			//* ghetto-debugging *//
-			$log.log("Emit Add Element: ", data.item.id);
+			$log.log('Emit Add Element: ', data.item.id);
 			//  add item to array
 			vm.publishedData.push(data.item);
 		});
@@ -70,7 +70,7 @@
 		// listen to updated item
 		socketsFactory.on('update:pub:out', function (data) {
 			//* ghetto-debugging *//
-			$log.log("Emit Updated Element: ", data.id);
+			$log.log('Emit Updated Element: ', data.id);
 			//  update item in array
 			vm.publishedData[data.id] = data.item;
 		});
@@ -92,6 +92,14 @@
 			return dataFactory.getPublished();
 		}
 		
+		// manage new item form
+		function toggleAddForm() {
+			// open/close form on click
+			vm.showAddForm = !vm.showAddForm;
+			// clear item on click
+			vm.newItem = {};
+		 }
+		 
 		//  delete item
 		function deletePub(index) {
 			//  delete item from array
@@ -99,7 +107,7 @@
 			// emit to server
 			socketsFactory.emit('delete:pub', { id: index });
 			//* ghetto-debugging *// 
-			$log.log("Deleted Element: ", index);
+			$log.log('Deleted Element: ', index);
 		}
 		 
 		// add item
@@ -111,7 +119,7 @@
 			// send new itemect through socket
 			socketsFactory.emit('add:pub', { item: item });
 			//* ghetto-debugging *// 
-			$log.log("Added Element: ", item.id);
+			$log.log('Added Element: ', item.id);
 		 }
 		 
 		 function updatePub(index , item) {
@@ -120,15 +128,8 @@
 			// emit item and index
 			socketsFactory.emit('update:pub', { id: index, item: item });
 			//* ghetto-debugging *// 
-			$log.log("Updated Element: ", index);
+			$log.log('Updated Element: ', index);
 		}
 		 
-		// manage new item form
-		function toggleAddForm() {
-			// open/close form on click
-			vm.showAddForm = !vm.showAddForm;
-			// clear item on click
-			vm.newItem = {};
-		 }
 	}
 })();

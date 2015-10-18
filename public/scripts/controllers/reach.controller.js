@@ -5,12 +5,27 @@
 		.module('app')
 		.controller('ReachController', ReachController);
 
-	ReachController.$inject = ['dataFactory', '$log', '$window'];
-	function ReachController(dataFactory, $log, $window) {
+	ReachController.$inject = ['dataFactory', '$log', '$window', 'socketsFactory'];
+	function ReachController(dataFactory, $log, $window, socketsFactory) {
 		var vm = this;
 		
 		// reach array
 		vm.reachData = [];
+		
+		vm.emptyItem	= {  
+			'timestamp': '',
+			'organic': '',
+			'paid': '',
+			'total': '',
+			'viral': ''
+		}
+		
+		vm.newItem 			= vm.emptyItem;
+		vm.showAddForm 		= false;
+		vm.toggleAddForm 	= toggleAddForm;
+		
+		// actions
+		vm.addReach			= addReach;
 		
 		// d3
 		var d3 = $window.d3;
@@ -343,5 +358,24 @@
 					.delay(delay);
 			}
 		}
+		
+		function toggleAddForm() {
+			// open/close form on click
+			vm.showAddForm = !vm.showAddForm;
+			// clear item on click
+			vm.newItem = {};
+		} 
+		
+		// add item
+		function addPub(item) {
+			// close new item form
+			vm.showAddForm = false;
+			// add item to current array
+			vm.publishedData.push(item);
+			// send new itemect through socket
+			socketsFactory.emit('add:reach', { item: item });
+			//* ghetto-debugging *// 
+			$log.log('Added Element: ', item.id);
+		 }
 	}
 })();
