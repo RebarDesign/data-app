@@ -367,15 +367,18 @@
 		} 
 		
 		// add item
-		function addPub(item) {
+		function addReach(item) {
 			// close new item form
 			vm.showAddForm = false;
 			// add item to current array
-			vm.publishedData.push(item);
+			
+			item.total = item.organic + item.viral + item.paid;
+			item.timestamp = Date.now();
+			
 			// send new itemect through socket
 			socketsFactory.emit('add:reach', { item: item });
 			//* ghetto-debugging *// 
-			$log.log('Added Element: ', item.id);
+			$log.log('Added Element');
 		 }
 	}
 })();

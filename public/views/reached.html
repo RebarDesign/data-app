@@ -10,11 +10,24 @@
 
 <div class="row">
 	<div class="col-md-6 col-md-offset-3">
-		<button type="button" class="btn btn-default btn-block" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add' }}</button>
-		
+		<button type="button" class="btn btn-default btn-block" ng-class="vm.showAddForm ? 'btn-danger' : 'Add'" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add' }}</button>
+		<hr>
 		<div ng-show="vm.showAddForm">
-			<rd-new-published></rd-new-published>
-			<button ng-click="vm.addReach(vm.newItem)" type="submit" class="btn btn-danger btn-lg">Add</button>
+			<form ng-submit="vm.addReach(vm.newItem)">
+				<div class="form-group">
+					<label for="organicImpressions">Organic Impressions</label>
+					<input ng-model="vm.newItem.organic" type="number" class="form-control" id="organicImpressions">
+				</div>
+				<div class="form-group">
+					<label for="viralImpressions">Viral Impressions</label>
+					<input ng-model="vm.newItem.viral" type="number" class="form-control" id="viralImpressions">
+				</div>
+				<div class="form-group">
+					<label for="paidImpressions">Paid Impressions</label>
+					<input ng-model="vm.newItem.paid" type="number" class="form-control" id="paidImpressions">
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
 		</div>
 	</div>
 </div>
