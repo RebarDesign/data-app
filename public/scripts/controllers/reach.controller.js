@@ -26,22 +26,27 @@
 		var y = d3.scale.linear()
 			.range([height, 0]);
 		
+		// bar colors
+		var yellow 	= '#FFC107',
+			green	= '#d0743c',
+			blue	= '#607D8B'; 
+			
 		// get color range 
 		var color = d3.scale.ordinal()
-    	.range(["#FFC107", "#d0743c", "#607D8B"]);
+    	.range([yellow, green, blue]);
 		
 		// x axis on the bottom
 		var xAxis = d3.svg.axis()
 			.scale(x)
-			.orient("bottom");
+			.orient('bottom');
 		
 		// y axis on the left with 10 ticks
 		var yAxis = d3.svg.axis()
 			.scale(y)
-			.orient("left")
+			.orient('left')
 			.ticks(10);
 				
-		var parseDate = d3.time.format("%X");
+		var parseDate = d3.time.format('%X');
 		
 		// actions
 		activate();
@@ -74,7 +79,7 @@
 			
 			// remove empty objects
 			var newArray = array.filter(function (n) {
-				return n.hasOwnProperty("post_impressions");
+				return n.hasOwnProperty('post_impressions');
 			})
 			
 			
@@ -118,11 +123,11 @@
 		function drawStackedBars(array){
 			
 			// find our element and append size it
-			var svg = d3.select("#stack-chart")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			var svg = d3.select('#stack-chart')
+				.attr('width', width + margin.left + margin.right)
+				.attr('height', height + margin.top + margin.bottom)
+				.append('g')
+				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 			
 			// get highest post value
 			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
@@ -153,165 +158,165 @@
 			y.domain([0, yMax]);
 			
 			// style the x axis
-			svg.append("g")
-				.attr("class", "x axis")
-				.attr("transform", "translate(0," + height + ")")
-				.attr("font-size", "7px")
+			svg.append('g')
+				.attr('class', 'x axis')
+				.attr('transform', 'translate(0,' + height + ')')
+				.attr('font-size', '7px')
 				.call(xAxis);
 			
 			// x axis label
-			svg.append("text")
-				.attr("class", "x axis")
-				.attr("text-anchor", "end")
-				.attr("x", width / 2)
-				.attr("y", height+ 25)
-				.text("Post Item");
+			svg.append('text')
+				.attr('class', 'x axis')
+				.attr('text-anchor', 'end')
+				.attr('x', width / 2)
+				.attr('y', height+ 25)
+				.text('Post Item');
 				
 			//TODO Style the label 
 				
 				
 			// style the y axis
-			svg.append("g")
-				.attr("class", "y axis")
+			svg.append('g')
+				.attr('class', 'y axis')
 				.call(yAxis)
-				.append("text")
-				.attr("transform", "rotate(-90)")
-				.attr("y", 6)
-				.attr("dy", ".71em")
-				.style("text-anchor", "end")
-				.text("Impressions");
+				.append('text')
+				.attr('transform', 'rotate(-90)')
+				.attr('y', 6)
+				.attr('dy', '.71em')
+				.style('text-anchor', 'end')
+				.text('Impressions');
 				
 			// draw the bars
-			var impressions = svg.selectAll(".bar")
+			var impressions = svg.selectAll('.bar')
 				.data(array)
-				.enter().append("g")
-				.attr("class", "bar")
-				.attr("transform", function(d) { return "translate(" + x(d.index) + ",0)"; });
+				.enter().append('g')
+				.attr('class', 'bar')
+				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
 
-			impressions.selectAll("rect")
+			impressions.selectAll('rect')
 				.data(function(d) { return d.impressions; })
-				.enter().append("rect")
-				.attr("width", x.rangeBand())
-				.attr("y", function(d) { return y(d.y1); })
-				.attr("height", function(d) { return y(d.y0) - y(d.y1); })
-				.style("fill", function(d) { return color(d.name); })
+				.enter().append('rect')
+				.attr('width', x.rangeBand())
+				.attr('y', function(d) { return y(d.y1); })
+				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
+				.style('fill', function(d) { return color(d.name); })
 				// set rect class to it's color for manipulation
-				.attr("class", function(d) { return d.name; })
+				.attr('class', function(d) { return d.name; })
 				// tooltip info
-				.append("svg:title")
+				.append('svg:title')
    				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
 			
-			var legend = svg.selectAll(".legend")
+			var legend = svg.selectAll('.legend')
 				.data(color.domain().slice().reverse())
-				.enter().append("g")
-				.attr("class", "legend")
-				.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+				.enter().append('g')
+				.attr('class', 'legend')
+				.attr('transform', function(d, i) { return 'translate(0,' + i * 20 + ')'; });
 			
 			var organicVisibility = false;
 			var paidVisibility = false;
 			var viralVisibility = false;
 			
-			legend.append("rect")
-				.attr("x", width - 18)
-				.attr("width", 18)
-				.attr("height", 18)
-				.attr("id", color)
-				.style("cursor", "pointer")
-				.style("cursor", "hand") 
-				.style("fill", color)
+			legend.append('rect')
+				.attr('x', width - 18)
+				.attr('width', 18)
+				.attr('height', 18)
+				.attr('id', color)
+				.style('cursor', 'pointer')
+				.style('cursor', 'hand') 
+				.style('fill', color)
 				// lighten the bars on hover
 				.on('mouseover', function(d){
-					switch (d3.select(this).attr("id")){
+					switch (d3.select(this).attr('id')){
 						// organic
-						case "#FFC107":
-							d3.selectAll(".viral").style("opacity", '0.3');
-							d3.selectAll(".paid").style("opacity", '0.3');
+						case '#FFC107':
+							d3.selectAll('.viral').style('opacity', '0.3');
+							d3.selectAll('.paid').style('opacity', '0.3');
 						break;
 						// paid
-						case "#d0743c":
-							d3.selectAll(".organic").style("opacity", '0.3');
-							d3.selectAll(".viral").style("opacity", '0.3');
+						case '#d0743c':
+							d3.selectAll('.organic').style('opacity', '0.3');
+							d3.selectAll('.viral').style('opacity', '0.3');
 						break;
 						// viral
-						case "#607D8B":
-							d3.selectAll(".organic").style("opacity", '0.3');
-							d3.selectAll(".paid").style("opacity", '0.3');
+						case '#607D8B':
+							d3.selectAll('.organic').style('opacity', '0.3');
+							d3.selectAll('.paid').style('opacity', '0.3');
 						break;
 					}
 				})
 				.on('mouseleave', function(d){
-					switch (d3.select(this).attr("id")){
+					switch (d3.select(this).attr('id')){
 						// organic
-						case "#FFC107":
-							d3.selectAll(".viral").style("opacity", '1');
-							d3.selectAll(".paid").style("opacity", '1');
+						case '#FFC107':
+							d3.selectAll('.viral').style('opacity', '1');
+							d3.selectAll('.paid').style('opacity', '1');
 						break;
 						// paid
-						case "#d0743c":
-							d3.selectAll(".organic").style("opacity", '1');
-							d3.selectAll(".viral").style("opacity", '1');
+						case '#d0743c':
+							d3.selectAll('.organic').style('opacity', '1');
+							d3.selectAll('.viral').style('opacity', '1');
 						break;
 						// viral
-						case "#607D8B":
-							d3.selectAll(".organic").style("opacity", '1');
-							d3.selectAll(".paid").style("opacity", '1');
+						case '#607D8B':
+							d3.selectAll('.organic').style('opacity', '1');
+							d3.selectAll('.paid').style('opacity', '1');
 						break;
 					}
 				})
 				// toggle visibility of bars 
 				// TODO: More elegantly
-				.on("click", function(){
+				.on('click', function(){
 					
-					switch (d3.select(this).attr("id")){
+					switch (d3.select(this).attr('id')){
 						// organic
-						case "#FFC107":
+						case '#FFC107':
 							var active   = organicVisibility ? false : true,
 							newOpacity = active ? 0 : 1;
 							// Hide or show the elements
-							d3.selectAll(".viral").style("opacity", newOpacity);
-							d3.selectAll(".paid").style("opacity", newOpacity);
+							d3.selectAll('.viral').style('opacity', newOpacity);
+							d3.selectAll('.paid').style('opacity', newOpacity);
 							// Update whether or not the elements are active
 							organicVisibility = active;
 						break;
 						// paid
-						case "#d0743c":
+						case '#d0743c':
 							var active   = paidVisibility ? false : true,
 							newOpacity = active ? 0 : 1;
 							// Hide or show the elements
-							d3.selectAll(".organic").style("opacity", newOpacity);
-							d3.selectAll(".viral").style("opacity", newOpacity);
+							d3.selectAll('.organic').style('opacity', newOpacity);
+							d3.selectAll('.viral').style('opacity', newOpacity);
 							// Update whether or not the elements are active
 							paidVisibility = active;
 						break;
 						// viral
-						case "#607D8B":
+						case '#607D8B':
 							var active   = viralVisibility ? false : true,
 							newOpacity = active ? 0 : 1;
 							// Hide or show the elements
-							d3.selectAll(".organic").style("opacity", newOpacity);
-							d3.selectAll(".paid").style("opacity", newOpacity);
+							d3.selectAll('.organic').style('opacity', newOpacity);
+							d3.selectAll('.paid').style('opacity', newOpacity);
 							// Update whether or not the elements are active
 							viralVisibility = active;
 						break;
 					}
 				});
 			
-			legend.append("text")
-				.attr("x", width - 24)
-				.attr("y", 9)
-				.attr("dy", ".35em")
-				.style("text-anchor", "end")
+			legend.append('text')
+				.attr('x', width - 24)
+				.attr('y', 9)
+				.attr('dy', '.35em')
+				.style('text-anchor', 'end')
 				.text(function(d) { return d; });
 				
 			// monitor checkbox
-			d3.select("input").on("change", change);
+			d3.select('input').on('change', change);
 			
 			function change() {
 
 
 				// delay the redraw of the elements
 				var sortTimeout = setTimeout(function() {
-					d3.select("input").property("checked", true).each(change);
+					d3.select('input').property('checked', true).each(change);
 				}, 1000);
 
 				clearTimeout(sortTimeout);
@@ -328,13 +333,13 @@
 				var transition = svg.transition().duration(750),
 					delay = function(d, i) { return i * 5; };
 				
-				transition.selectAll("g.bar")
+				transition.selectAll('g.bar')
 					.delay(delay)
-					.attr("transform", function(d) { return "translate(" + x(d.index) + ",0)"; });
+					.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
 					
-				transition.select(".x.axis")
+				transition.select('.x.axis')
 					.call(xAxis)
-					.selectAll("g.bar")
+					.selectAll('g.bar')
 					.delay(delay);
 			}
 		}
