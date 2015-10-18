@@ -27,8 +27,8 @@
 					</div>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li ng-class="{ active: vm.isPubActive }"><a href="#/published" ng-click="vm.isPubActive = true">Publishing</a></li>
-						<li ng-class="{ active: !vm.isPubActive }"><a href="#/reached" ng-click="vm.isPubActive = false">Reach</a></li>
+						<li ng-class="{ active: vm.isActive('/published') }"><a href="#/published">Publishing</a></li>
+						<li ng-class="{ active: vm.isActive('/reached') }"><a href="#/reached">Reach</a></li>
 					</ul>
 					</div>
 				</div>

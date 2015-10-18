@@ -168,6 +168,8 @@ Creating angular structure:
   Starting work on the UI elements
   
   Move to published page, and implement directives
+  
+  ####Finished published functionality
         
      
     

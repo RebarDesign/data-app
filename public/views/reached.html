@@ -6,6 +6,20 @@
 	<svg id="stack-chart" class="rd-chart"></svg>
 </div>
 
+<hr>
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<button type="button" class="btn btn-default btn-block" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add' }}</button>
+		
+		<div ng-show="vm.showAddForm">
+			<rd-new-published></rd-new-published>
+			<button ng-click="vm.addReach(vm.newItem)" type="submit" class="btn btn-danger btn-lg">Add</button>
+		</div>
+	</div>
+</div>
+
+
 <!--<div ng-repeat="reachItem in vm.reachData">
 	<pre>
 		{{reachItem}}
