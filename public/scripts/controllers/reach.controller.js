@@ -57,7 +57,7 @@
 				vm.reachData = cleanArray(vm.reachData);
 				//* ghetto-debugging *//
 				// $log.info('OK:: getReachData(): ', vm.reachData);
-				drawBars(vm.reachData);
+				// drawBars(vm.reachData);
 				drawStackedBars(vm.reachData);
 			})
 		
@@ -185,12 +185,12 @@
 			function change() {
 				
 				
-				// delay the redraw of the elements
-				var sortTimeout = setTimeout(function() {
-					d3.select("input").property("checked", true).each(change);
-				}, 100);
+				// // delay the redraw of the elements
+				// var sortTimeout = setTimeout(function() {
+				// 	d3.select("input").property("checked", true).each(change);
+				// }, 100);
 				
-				clearTimeout(sortTimeout);
+				// clearTimeout(sortTimeout);
 				
 				// Copy-on-write since tweens are evaluated after a delay.
 				// order either by post number or index
@@ -201,7 +201,7 @@
 					.copy();
 					
 				// sort by index
-				// they can be sorted by timestamp, but then the null timestamps have to be removed
+				// they can be sorted by timestamp, but it's the same
 				svg.selectAll(".bar")
 					.sort(function(a, b) { return x0(a.index) - x0(b.index); });
 					
@@ -249,6 +249,7 @@
 			//* ghetto-debugging *//
 			$log.log('With Impression ', array);
 			
+			// sort by value
 			array.sort(function(a, b) { return b.total - a.total; });
 				
 			// set x domain the number of elements
@@ -290,9 +291,9 @@
 			var impressions = svg.selectAll(".bar")
 				.data(array)
 				.enter().append("g")
-				.attr("class", "g")
+				.attr("class", "bar")
 				.attr("transform", function(d) { return "translate(" + x(d.index) + ",0)"; });
-				
+
 			impressions.selectAll("rect")
 				.data(function(d) { return d.impressions; })
 				.enter().append("rect")
@@ -300,7 +301,11 @@
 				.attr("y", function(d) { return y(d.y1); })
 				.attr("height", function(d) { return y(d.y0) - y(d.y1); })
 				.style("fill", function(d) { return color(d.name); })
-				.attr("class", function(d) { return d.name; });
+				// set rect class to it's color for manipulation
+				.attr("class", function(d) { return d.name; })
+				// tooltip info
+				.append("svg:title")
+   				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
 			
 			var legend = svg.selectAll(".legend")
 				.data(color.domain().slice().reverse())
@@ -403,6 +408,41 @@
 				.attr("dy", ".35em")
 				.style("text-anchor", "end")
 				.text(function(d) { return d; });
+				
+			// monitor checkbox
+			d3.select("input").on("change", change);
+			
+			function change() {
+
+
+				// delay the redraw of the elements
+				var sortTimeout = setTimeout(function() {
+					d3.select("input").property("checked", true).each(change);
+				}, 1000);
+
+				clearTimeout(sortTimeout);
+
+				// Copy-on-write since tweens are evaluated after a delay.
+				// order either by post value or index
+				var x0 = x.domain(array.sort(this.checked
+					? function(a, b) { return a.index - b.index; }
+					: function(a, b) { return b.total - a.total; })
+					.map(function(d) { return d.index; }))
+					.copy();
+					
+				// make delay relative to element index
+				var transition = svg.transition().duration(750),
+					delay = function(d, i) { return i * 5; };
+				
+				transition.selectAll("g.bar")
+					.delay(delay)
+					.attr("transform", function(d) { return "translate(" + x(d.index) + ",0)"; });
+					
+				transition.select(".x.axis")
+					.call(xAxis)
+					.selectAll("g.bar")
+					.delay(delay);
+			}
 		}
 	}
 })();
