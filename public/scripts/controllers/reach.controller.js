@@ -11,21 +11,23 @@
 		
 		// reach array
 		vm.reachData = [];
+		vm.newItem = {};
 		
-		vm.emptyItem	= {  
-			'timestamp': '',
-			'organic': '',
-			'paid': '',
-			'total': '',
-			'viral': ''
-		}
+		// vm.emptyItem	= {  
+		// 	'timestamp': '',
+		// 	'organic': '',
+		// 	'paid': '',
+		// 	'total': '',
+		// 	'viral': ''
+		// }
 		
-		vm.newItem 			= vm.emptyItem;
+		// vm.newItem 			= vm.emptyItem;
 		vm.showAddForm 		= false;
 		vm.toggleAddForm 	= toggleAddForm;
 		
 		// actions
 		vm.addReach			= addReach;
+		vm.updateChart		= updateChart;
 		
 		// d3
 		var d3 = $window.d3;
@@ -68,14 +70,12 @@
 		
 		// sockets
 		
-		// listen to deleted item
-		socketsFactory.on('delete:reach:out', function (data) {
+		// listen to added item
+		socketsFactory.on('add:reach:out', function (data) {
 			//* ghetto-debugging *//
-			$log.log('Emit Add Reach Element', data);
+			$log.log('Emit Add Reach Element', data.item);
 			// update array
-			vm.reachData.push(data.item);
-			// draw chart
-			drawStackedBars(vm.reachData);
+			updateChart(data.item);
 		});
 
 		////////////////
@@ -83,19 +83,19 @@
 		function activate() { 
 		
 			return getReachData().then(function (data) {
-				// assign data to reachData array
-				vm.reachData = data.data.response;
 				// clean up array
-				vm.reachData = cleanArray(vm.reachData);
+				vm.reachData = cleanArray(data);
 				//* ghetto-debugging *//
 				// $log.info('OK:: getReachData(): ', vm.reachData);
-				drawStackedBars(vm.reachData);
+				drawStackedBars();
 			})
 		
 		}
 		
 		function getReachData(){
-			return dataFactory.getReach();
+			return dataFactory.getReach().then(function(data) {
+                	return data.data.response;
+				});
 		}
 		
 		// manipulate array to my liking
@@ -147,7 +147,7 @@
 			return newArray;
 		}
 		
-		function drawStackedBars(array){
+		function drawStackedBars(){
 			
 			// find our element and append size it
 			var svg = d3.select('#stack-chart')
@@ -157,29 +157,29 @@
 				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 			
 			// get highest post value
-			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
+			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
 			
 			//* fancy-debugging *//
 			// debugger
 			
 			// we only need the impression properties
-			color.domain(d3.keys(array[0]).filter(function(key) { return (key !== 'timestamp' && key !== 'index' && key !== 'total'); }));
+			color.domain(d3.keys(vm.reachData[0]).filter(function(key) { return (key !== 'timestamp' && key !== 'index' && key !== 'total'); }));
 			
 			
-			array.forEach(function(d) {
+			vm.reachData.forEach(function(d) {
 				var y0 = 0;
 				// stack the values
 				d.impressions = color.domain().map(function(name) { return {name: name, y0: y0, y1 : y0 += +d[name]}; });
 			});
 			
 			//* ghetto-debugging *//
-			$log.log('With Impression ', array);
+			$log.log('With Impression ', vm.reachData);
 			
 			// sort by value
-			array.sort(function(a, b) { return b.total - a.total; });
+			vm.reachData.sort(function(a, b) { return b.total - a.total; });
 				
 			// set x domain the number of elements
-			x.domain(array.map(function(d) { return d.index; }));
+			x.domain(vm.reachData.map(function(d) { return d.index; }));
 			
 			// set y domain, the highest post value
 			y.domain([0, yMax]);
@@ -215,7 +215,7 @@
 				
 			// draw the bars
 			var impressions = svg.selectAll('.bar')
-				.data(array)
+				.data(vm.reachData)
 				.enter().append('g')
 				.attr('class', 'bar')
 				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
@@ -350,7 +350,7 @@
 
 				// Copy-on-write since tweens are evaluated after a delay.
 				// order either by post value or index
-				var x0 = x.domain(array.sort(this.checked
+				var x0 = x.domain(vm.reachData.sort(this.checked
 					? function(a, b) { return a.index - b.index; }
 					: function(a, b) { return b.total - a.total; })
 					.map(function(d) { return d.index; }))
@@ -391,6 +391,20 @@
 			socketsFactory.emit('add:reach', { item: item });
 			//* ghetto-debugging *// 
 			$log.log('Added Element');
+		 }
+		 
+		 function updateChart(item) { 		
+			item.index = vm.reachData.length;						
+			vm.reachData.push(item);
+			
+			vm.reachData.forEach(function(d) {
+				var y0 = 0;
+				// stack the values
+				d.impressions = color.domain().map(function(name) { return {name: name, y0: y0, y1 : y0 += +d[name]}; });
+			});
+			
+			 //* ghetto-debugging *// 
+			$log.log('Updated Array', vm.reachData);
 		 }
 	}
 })();
