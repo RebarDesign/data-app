@@ -87,7 +87,7 @@
 				vm.reachData = cleanArray(data);
 				//* ghetto-debugging *//
 				// $log.info('OK:: getReachData(): ', vm.reachData);
-				drawChart(vm.reachData);
+				drawChart();
 			})
 		
 		}
@@ -147,26 +147,26 @@
 			return newArray;
 		}
 		
-		function drawChart(array){
+		function drawChart(){
 					
 			// get highest post value
-			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
+			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
 			
 			//* fancy-debugging *//
 			// debugger
 			
 			
 			// divide impression properties for bar height
-			addImpressionProperties(array);
+			addImpressionProperties(vm.reachData);
 			
 			//* ghetto-debugging *//
-			// $log.log('With Impression ', array);
+			// $log.log('With Impression ', vm.reachData);
 			
 			// sort by value
-			array.sort(function(a, b) { return b.total - a.total; });
+			vm.reachData.sort(function(a, b) { return b.total - a.total; });
 				
 			// set x domain the number of elements
-			x.domain(array.map(function(d) { return d.index; }));
+			x.domain(vm.reachData.map(function(d) { return d.index; }));
 			
 			// set y domain, the highest post value
 			y.domain([0, yMax]);
@@ -201,10 +201,10 @@
 				
 			// draw the bars
 			var impressions = svg.selectAll('.bar')
-				.data(array)
+					.data(vm.reachData)
 				.enter().append('g')
-				.attr('class', 'bar')
-				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
+					.attr('class', 'bar')
+					.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
 
 			impressions.selectAll('rect')
 				.data(function(d) { return d.impressions; })
@@ -336,7 +336,7 @@
 
 				// Copy-on-write since tweens are evaluated after a delay.
 				// order either by post value or index
-				var x0 = x.domain(array.sort(this.checked
+				var x0 = x.domain(vm.reachData.sort(this.checked
 					? function(a, b) { return a.index - b.index; }
 					: function(a, b) { return b.total - a.total; })
 					.map(function(d) { return d.index; }))
@@ -352,65 +352,53 @@
 					
 				transition.select('.x.axis')
 					.call(xAxis)
-					.selectAll('g.bar')
+					.selectAll('g')
 					.delay(delay);
 			}
 		}
 		
-		function updateChart(array) {
+		function updateChart() {
 			
-			addImpressionProperties(array);
+			addImpressionProperties(vm.reachData);
 			//* ghetto-debugging *// 
-			$log.log('Impressed Array', array);
+			$log.log('Impressed Array', vm.reachData);
 			
 			// get highest post value
-			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
+			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
 			
-			// set x domain the number of elements
-			x.domain(array.map(function(d) { return d.index; }));
+			// update x domain the number of elements
+			x.domain(vm.reachData.map(function(d) { return d.index; }));
 			
-			// set y domain, the highest post value
+			// update y domain, the highest post value
 			y.domain([0, yMax]);
 			
-			var newImpressions = svg.selectAll('.bar')
-				.data(array, function(d) { return d; });
-				
-			newImpressions
-				.enter()
-				.append('rect');
-				
-			newImpressions
-				.attr('x', function(d) { return x(d.total); })
+			// draw the bars
+			var impressions = svg.selectAll('.bar')
+					.data(vm.reachData)
+				.enter().append('g')
+					.attr('class', 'bar')
+					.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
+
+			impressions.selectAll('rect')
+				.data(function(d) { return d.impressions; })
+				.enter().append('rect')
 				.attr('width', x.rangeBand())
 				.attr('y', function(d) { return y(d.y1); })
+				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
 				.style('fill', function(d) { return color(d.name); })
-				.attr('height', function(d) { return y(d.y0) - y(d.y1); });
-				
+				// set rect class to it's color for manipulation
+				.attr('class', function(d) { return d.name; })
+				// tooltip info
+				.append('svg:title')
+   				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
 			
-			// impressions.selectAll('rect')
-			// 	.data(function(d) { return d.impressions; })
-			// 	.enter().append('rect')
-			// 	.attr('width', x.rangeBand())
-			// 	.attr('y', function(d) { return y(d.y1); })
-			// 	.attr('height', function(d) { return y(d.y0) - y(d.y1); })
-			// 	.style('fill', function(d) { return color(d.name); })
-			// 	// set rect class to it's color for manipulation
-			// 	.attr('class', function(d) { return d.name; })
-			// 	// tooltip info
-			// 	.append('svg:title')
-   			// 	.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);})
-				   
 			// make delay relative to element index
 			var transition = svg.transition().duration(750),
 				delay = function(d, i) { return i * 5; };
 				
-			transition.selectAll('g.bar')
-				.delay(delay)
-				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
-				
 			transition.select('.x.axis')
 				.call(xAxis)
-				.selectAll('g.bar')
+				.selectAll('g')
 				.delay(delay);
 				
 			transition.select('.y.axis')
@@ -444,13 +432,16 @@
 			newItem.organic		= item.organic.toString();
 			newItem.paid		= item.paid.toString(); 
 			
+			$log.log('Added Element', newItem);
+			
+			// add to array
 			addReachItem(newItem, vm.reachData);
+			// update chart
 			updateChart(vm.reachData);
 			
 			// send new itemect through socket
 			// socketsFactory.emit('add:reach', { item: item });
 			//* ghetto-debugging *// 
-			$log.log('Added Element', newItem);
 		 }
 		 
 		 function addReachItem(item , array) { 		
