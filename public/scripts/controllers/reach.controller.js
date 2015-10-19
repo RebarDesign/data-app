@@ -209,13 +209,23 @@
 			impressions.selectAll('rect')
 				.data(function(d) { return d.impressions; })
 				.enter().append('rect')
+				// build bars from the bottom
 				.attr('width', x.rangeBand())
+				// set rect class to it's color for manipulation
+				.attr('y', function(d) { return y(height - d.y1); })
+				.attr("height", 0)
+				.transition()
+				.duration(600)
+				.delay(function (d, i) {
+					return i * 50;
+				})
 				.attr('y', function(d) { return y(d.y1); })
 				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
 				.style('fill', function(d) { return color(d.name); })
-				// set rect class to it's color for manipulation
-				.attr('class', function(d) { return d.name; })
+				
 				// tooltip info
+			impressions.selectAll('rect')
+				.attr('class', function(d) { return d.name; })
 				.append('svg:title')
    				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
 			
@@ -361,8 +371,6 @@
 			
 			// get data again
 			addImpressionProperties(vm.reachData);
-			//* ghetto-debugging *// 
-			// $log.log('Impressed Array', vm.reachData);
 			
 			// get highest post value
 			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
@@ -371,10 +379,12 @@
 			x.domain(vm.reachData.map(function(d) { return d.index; }));
 			y.domain([0, yMax]);
 			
+			// check input value
 			x.domain(vm.reachData.sort(d3.select('input').property('checked')
 					? function(a, b) { return a.index - b.index; }
 					: function(a, b) { return b.total - a.total; })
 					.map(function(d) { return d.index; }));
+			
 			
 			
 			var impressions = svg.selectAll('.bar')
