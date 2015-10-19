@@ -11,6 +11,8 @@
 		var io = $window.io;
 		// connect to port 3000 when Factory is called
 		var socket = io.connect('http://localhost:3000');
+		// if connection from lan
+		// var socket = io.connect('http://192.168.1.2:3000');
 		
 		var factory = {
 			on:on,
