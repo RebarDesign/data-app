@@ -6783,6 +6783,10 @@ hr {
 .navbar-nav li a {
   text-transform: uppercase;
 }
+.rd-form .rd-form-id input {
+  background: none;
+  color: white;
+}
 .axis path,
 .axis line {
   fill: none;

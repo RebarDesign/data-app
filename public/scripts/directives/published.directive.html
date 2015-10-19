@@ -1,7 +1,7 @@
-<div class="panel panel-primary">
+<form class="panel panel-primary rd-form">
 	<div class="panel-heading">
 		<h3 ng-hide="editable" ng-bind="publishedItem.id" style="text-overflow: ellipsis;overflow: hidden;">ID</h3>
-		<div ng-show="editable">
+		<div ng-show="editable" class="rd-form-id">
 			<input class="form-control" type="text" ng-model="publishedItem.id"/>
 		</div>
 	</div>
@@ -14,19 +14,19 @@
 					<a href="{{publishedItem.content.media.url}}" target="new"><img data-ng-src="{{publishedItem.content.media.url}}" alt="{{publishedItem.content.media.fileName}}" style="height:100px;"></a>
 				</div>
 				<p>
-					<input ng-show="editable" type="text" ng-model="publishedItem.content.media.url" placeholder="paste url here"/>
+					<input class="form-control" ng-show="editable" type="text" ng-model="publishedItem.content.media.url" placeholder="paste url here"/>
 				</p>
 				
 				<!--basic item info-->
 				<b>Status:</b>
 				<p ng-show="!editable" ng-bind="publishedItem.status">{{publishedItem.status}}</p>
-				<p><input ng-show="editable" type="text" ng-model="publishedItem.status"/></p>
+				<p><input class="form-control" ng-show="editable" type="text" ng-model="publishedItem.status"/></p>
 				<b>Type:</b>
 				<p ng-show="!editable" ng-bind="publishedItem.content.postType"> {{publishedItem.content.postType}}</p>
-				<p><input ng-show="editable" type="text" ng-model="publishedItem.content.postType"/></p>
+				<p><input class="form-control" ng-show="editable" type="text" ng-model="publishedItem.content.postType"/></p>
 				<b>Scheduled:</b>
 				<p ng-show="!editable" ng-bind="publishedItem.scheduled"></p>
-				<p><input ng-show="editable" type="text" ng-model="publishedItem.scheduled"/></p>
+				<p><input class="form-control" ng-show="editable" type="text" ng-model="publishedItem.scheduled"/></p>
 			</div>
 			
 			<div class="col-md-8">
@@ -35,37 +35,34 @@
 					<div class="col-md-12">
 						<label>Message:</label><br/>
 						<h5 ng-show="!editable" ng-bind="publishedItem.content.message"></h5>
-						<textarea ng-show="editable" type="text" ng-model="publishedItem.content.message"/>
+						<textarea class="form-control" ng-show="editable" type="text" ng-model="publishedItem.content.message"/>
 					</div>
 				</div>
 				
 				<div class="row">
-					<div class="col-md-6">
-						<b>Network: </b><p ng-show="!editable" ng-bind="publishedItem.content.network"></p>
-						<p><input ng-show="editable" ng-model="publishedItem.content.network" type="text"></p>
-						<b>Post Type: </b><p ng-show="!editable" ng-bind="publishedItem.content.postType"></p>
-						<p><input ng-show="editable" ng-model="publishedItem.content.postType" type="text"></p>
+					<div ng-show="!editable" class="col-md-6">
+						<b>Network: </b><p ng-bind="publishedItem.content.network"></p>
+						<b>Post Type: </b><p ng-bind="publishedItem.content.postType"></p>
 					</div>
-					<div class="col-md-6">
+					<div ng-show="editable" class="col-md-12">
+						<b>Network: </b>
+						<p><input class="form-control" ng-show="editable" ng-model="publishedItem.content.network" type="text"></p>
+						<b>Post Type: </b>
+						<p><input class="form-control" ng-show="editable" ng-model="publishedItem.content.postType" type="text"></p>
+					</div>
+					<div ng-show="!editable" class="col-md-6">
 						<!--geo data-->
-						<div ng-hide="editable" ng-repeat="(geoProp, geoItem) in publishedItem.geo">
-							<b style="text-transform: capitalize">{{geoProp}} : </b><p ng-repeat="geoSubItem in geoItem">{{geoSubItem.value}}</p>
+						<div ng-repeat="(geoProp, geoItem) in publishedItem.geo">
+							<!--hide if property empty-->
+							<b ng-hide="geoItem == ''" style="text-transform: capitalize">{{geoProp}} : </b><p ng-repeat="geoSubItem in geoItem">{{geoSubItem.value}}</p>
 						</div>
 					</div>
 				</div>
 				<!--panel content bottom-->
 				<div class="row">
 					<!--panel action buttons-->
-					<div class="col-md-6">
+					<div class="col-md-12">
 						<a ng-hide="editable" ng-repeat="tag in publishedItem.tags track by $index" role="presentation"><em>{{tag}}</em>  </a>
-					</div>
-					<div class="col-md-6 pull-right">
-						<div class="btn-group" role="group" aria-label="Action Button">
-							<button ng-hide="editable" ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
-							<button ng-hide="editable" ng-click="editable = true" type="button" class="btn btn-default">Edit</button>
-							<button ng-show="editable" ng-click="vm.updatePub($index, publishedItem); editable = false" type="button" class="btn btn-danger">Save</button>
-							<button ng-show="editable" ng-click="editable = false"  type="button" class="btn btn-default">Cancel</button>
-						</div>
 					</div>
 					<!--end panel action buttons-->
 				</div>
@@ -74,5 +71,15 @@
 			<!--end panel right side-->
 		</div>
 		<!--end panel content top-->
-</div>
+		<div class="text-right">
+			<div class="btn-group" role="group" aria-label="Action Button">
+				<button ng-hide="editable" ng-click="vm.deletePub($index)"  type="button" class="btn btn-danger">Delete</button>
+				<button ng-hide="editable" ng-click="editable = true" type="button" class="btn btn-default">Edit</button>
+			</div>
+			<div class="btn-group" role="group" aria-label="Action Button">
+				<button ng-show="editable" ng-click="vm.updatePub($index, publishedItem); editable = false" type="button" class="btn btn-danger">Save</button>
+				<button ng-show="editable" ng-click="editable = false"  type="button" class="btn btn-default">Cancel</button>
+			</div>
+		</div>
+</form>
 	
