@@ -55,7 +55,7 @@
 			.orient('left')
 			.ticks(10);
 				
-		var parseDate = d3.time.format('%X');
+		// var parseDate = d3.time.format('%X');
 		
 		// find our element and append size it
 		var svg = d3.select("#stack-chart")
@@ -92,7 +92,8 @@
 		}
 		
 		function getReachData(){
-			return dataFactory.getReach().then(function(data) {
+			return dataFactory.getReach()
+				.then(function(data) {
                 	return data.data.response;
 				});
 		}
@@ -124,6 +125,7 @@
 					viral		:	null
 				};
 				
+				// start index from 1
 				item.index = ++index;
 				
 				// if has impressions
@@ -157,9 +159,6 @@
 			
 			// divide impression properties for bar height
 			addImpressionProperties(vm.reachData);
-			
-			//* ghetto-debugging *//
-			// $log.log('With Impression ', vm.reachData);
 			
 			// sort by value
 			vm.reachData.sort(function(a, b) { return b.total - a.total; });
@@ -222,12 +221,13 @@
 				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
 				.style('fill', function(d) { return color(d.name); })
 				
-				// tooltip info
+			// tooltip info
 			impressions.selectAll('rect')
 				.attr('class', function(d) { return d.name; })
 				.append('svg:title')
    				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
 			
+			// Impression types legend
 			var legend = svg.selectAll('.legend')
 				.data(color.domain().slice().reverse())
 				.enter().append('g')
@@ -330,11 +330,10 @@
 				.style('text-anchor', 'end')
 				.text(function(d) { return d; });
 				
-			// monitor checkbox
+			// monitor checkbox for sort
 			d3.select('input').on('change', change);
 			
 			function change() {
-
 
 				// delay the redraw of the elements
 				var sortTimeout = setTimeout(function() {
@@ -390,7 +389,7 @@
 					.map(function(d) { return d.index; }));
 			
 			
-			
+			// remove bars for new animation effect
 			var impressions = svg.selectAll('.bar')
 				.remove();
 			
@@ -401,6 +400,7 @@
 					.attr('class', 'bar')
 					.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
 
+			// draw the sub-bars
 			impressions.selectAll('rect')
 				.data(function(d) { return d.impressions; })
 				.enter().append('rect')
@@ -416,13 +416,14 @@
 				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
 				.attr('y', function(d) { return y(d.y1); })
 				.style('fill', function(d) { return color(d.name); })
+				
+			// tooltip info
+			impressions.selectAll('rect')
 				// set rect class to it's color for manipulation
 				.attr('class', function(d) { return d.name; })
-				// tooltip info
-				
-			impressions.selectAll('g.bar')
 				.append('svg:title')
    				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
+				
 			
 			// make delay relative to element index
 			var transition = svg.transition().duration(750),
