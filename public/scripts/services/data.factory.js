@@ -5,8 +5,8 @@
 		.module('app')
 		.factory('dataFactory', dataFactory);
 
-	dataFactory.$inject = ['$log' , '$http'];
-	function dataFactory($log , $http) {
+	dataFactory.$inject = ['$log' , '$http', '$q'];
+	function dataFactory($log , $http, $q) {
 		
 		var factory = {
 			getPublished:getPublished,
@@ -17,38 +17,43 @@
 
 		////////////////
 		function getPublished() {
+			var deferred = $q.defer();
 			
-			return $http.get('/api/published')
+			$http.get('/api/published')
 				.then(getPublishedComplete)
 				.catch(getPublishedFailed);
 	
 			function getPublishedComplete(response) {
 				//* ghetto-debugging *//
 				// $log.log(response);
-				return response;
+				deferred.resolve(response);
 			}
 	
 			function getPublishedFailed(error) {
-				$log.error('ERROR::getPublished Failed ' + error.data);
+				deferred.reject(error);
+				$log.error('ERROR::getPublished Data Failed ' + error.data);
 			}
-			
+			return deferred.promise;
 		}
 	
 		function getReach() {
+			var deferred = $q.defer();
 			
-			return $http.get('/api/reach')
+			$http.get('/api/reach')
 				.then(getReachComplete)
 				.catch(getReachFailed);
 	
 			function getReachComplete(response) {
 				//* ghetto-debugging *//
-				$log.log(response);
-				return response;
+				// $log.log(response);
+				deferred.resolve(response);
 			}
 	
 			function getReachFailed(error) {
-				$log.error('ERROR::getReach Failed ' + error.data);
+				deferred.reject(error);
+				$log.error('ERROR::getReach Data Failed ' + error.data);
 			}
+			return deferred.promise;
 		}
 	}
 })();

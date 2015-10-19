@@ -57,7 +57,7 @@ io.on('connection', function (socket) {
   // Add Item
   socket.on('add:reach', function (data) {
     
-    console.log("Reach item added: ", data.item);
+    // console.log("Reach item added: ", data.item);
     
     // breadcast to all other clients added element
     socket.broadcast.emit('add:reach:out', {
