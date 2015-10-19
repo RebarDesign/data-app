@@ -4,9 +4,10 @@
 	angular.module('app')
 	.config(AppConfig);
 	
-	AppConfig.$inject = ['$routeProvider'];
+	AppConfig.$inject = ['$routeProvider' , '$compileProvider'];
 	
-	function AppConfig($routeProvider) {
+	function AppConfig($routeProvider, $compileProvider) {
+		// define routes
 		$routeProvider
 			.when('/published', {
 				templateUrl: 'views/published.html',
@@ -20,6 +21,9 @@
 			})
 			.otherwise({
 				redirectTo: '/published'
-			});;
+			});
+			
+		// disable debug info
+  		$compileProvider.debugInfoEnabled(false);
 	}
 })();
