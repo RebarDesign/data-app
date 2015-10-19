@@ -24,7 +24,7 @@
 		// d3
 		var d3 = $window.d3;
 		var margin = {top: 20, right: 20, bottom: 30, left: 40},
-				width = 1000 - margin.left - margin.right,
+				width = 1200 - margin.left - margin.right,
 				height = 500 - margin.top - margin.bottom;
 				
 		// ordinal scale for X ( post index )
@@ -468,7 +468,7 @@
 			newItem.organic		= item.organic.toString();
 			newItem.paid		= item.paid.toString(); 
 			
-			$log.log('Added Element', newItem);
+			// $log.log('Added Element', newItem);
 			
 			// add to array
 			updateChart(newItem);
