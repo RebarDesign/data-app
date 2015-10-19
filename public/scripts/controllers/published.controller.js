@@ -81,7 +81,7 @@
 			
 			return getPublishedData().then(function (data){
 				//* ghetto-debugging *//
-				$log.info('OK::getPublishedData(): ',vm.publishedData);
+				// $log.info('OK::getPublishedData(): ',vm.publishedData);
 			});
 			
 		}
