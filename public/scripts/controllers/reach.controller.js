@@ -19,7 +19,7 @@
 		
 		// actions
 		vm.addReach			= addReach;
-		vm.addReachItem 	= addReachItem;
+		vm.updateChart 		= updateChart;
 		
 		// d3
 		var d3 = $window.d3;
@@ -73,9 +73,8 @@
 		socketsFactory.on('add:reach:out', function (data) {
 			//* ghetto-debugging *//
 			$log.log('Emit Add Reach Element', data.item);
-			vm.reachData = addReachItem(data.item , vm.reachData);
-			// update array
-			updateChart(vm.reachData);
+			// update chart with new item
+			updateChart(data.item);
 		});
 
 		////////////////
@@ -367,7 +366,12 @@
 			}
 		}
 		
-		function updateChart() {
+		function updateChart(item) {
+			
+			//  give item last index
+			item.index = vm.reachData.length + 1;		
+			// insert into array
+			vm.reachData.push(item);
 			
 			// get data again
 			addImpressionProperties(vm.reachData);
@@ -463,24 +467,10 @@
 			$log.log('Added Element', newItem);
 			
 			// add to array
-			addReachItem(newItem, vm.reachData);
+			updateChart(newItem);
 			
 			// send new itemect through socket
 			socketsFactory.emit('add:reach', { item: item });
-		 }
-		 
-		 function addReachItem(item) { 		
-			//  give item last index
-			item.index = vm.reachData.length + 1;		
-			// insert into array
-			vm.reachData.push(item);
-			
-			
-			updateChart(vm.reachData);
-			 //* ghetto-debugging *// 
-			// $log.log('Updated Array',  vm.reachData);
-			
-			return array;
 		 }
 		 
 		 function addImpressionProperties(array) {
