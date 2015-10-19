@@ -58,11 +58,11 @@
 		// var parseDate = d3.time.format('%X');
 		
 		// find our element and append size it
-		var svg = d3.select("#stack-chart")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
-			.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		var svg = d3.select('#stack-chart')
+			.attr('width', width + margin.left + margin.right)
+			.attr('height', height + margin.top + margin.bottom)
+			.append('g')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 		
 		// actions
 		activate();
@@ -76,7 +76,7 @@
 			// update chart with new item
 			updateChart(data.item);
 		});
-
+		
 		////////////////
 
 		function activate() { 
@@ -169,33 +169,29 @@
 			// set y domain, the highest post value
 			y.domain([0, yMax]);
 			
+			xAxis
+			.tickValues(x.domain().filter(function(d, i) { return !(i % 2); }))
+			
 			// style the x axis
-			svg.append("g")
-				.attr("class", "x axis")
-				.attr("transform", "translate(0," + height + ")")
-				.attr("font-size", "7px")
+			svg.append('g')
+				.attr('class', 'x axis')
+				.attr('transform', 'translate(0,' + height + ')')
+				.attr('font-size', '7px')
 				.call(xAxis);
 			
 			// x axis label
-			svg.append("text")
-				.attr("class", "x axis")
-				.attr("text-anchor", "end")
-				.attr("x", width / 2)
-				.attr("y", height+ 25)
-				.text("Post Item");
-				
-			//TODO Style the label 
+			svg.append('text')
+				.attr('class', 'x axis')
+				.attr('text-anchor', 'end')
+				.attr('x', width / 2)
+				.attr('y', height+ 30)
+				.text('Post Item');
 				
 			// style the y axis
-			svg.append("g")
-				.attr("class", "y axis")
-				.call(yAxis)
-				.append("text")
-				.attr("transform", "rotate(-90)")
-				.attr("y", 6)
-				.attr("dy", ".71em")
-				.style("text-anchor", "end")
-				.text("Impressions");
+			svg.append('g')
+				.attr('class', 'y axis')
+				.attr('transform', 'translate(50,0)')
+				.call(yAxis);
 				
 			// draw the bars
 			var impressions = svg.selectAll('.bar')
@@ -211,7 +207,7 @@
 				.attr('width', x.rangeBand())
 				// set rect class to it's color for manipulation
 				.attr('y', function(d) { return y(height - d.y1); })
-				.attr("height", 0)
+				.attr('height', 0)
 				.transition()
 				.duration(600)
 				.delay(function (d, i) {
@@ -225,7 +221,7 @@
 			impressions.selectAll('rect')
 				.attr('class', function(d) { return d.name; })
 				.append('svg:title')
-   				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
+   				.text(function(d) { return d.name + ': ' + (d.y1 - d.y0);});
 			
 			// Impression types legend
 			var legend = svg.selectAll('.legend')
@@ -332,9 +328,12 @@
 				
 			// monitor checkbox for sort
 			
-			d3.select("#sort-box").on('change', change);
+			d3.select('#sort-box').on('change', change);
 			
 			function change() {
+				
+				d3.select('#sort-box').property('checked') ? (vm.sortText = 'value') : (vm.sortText = 'index');
+				
 
 				// delay the redraw of the elements
 				var sortTimeout = setTimeout(function() {
@@ -345,15 +344,18 @@
 
 				// Copy-on-write since tweens are evaluated after a delay.
 				// order either by post value or index
-				var x0 = x.domain(vm.reachData.sort(this.checked
+				x.domain(vm.reachData.sort(this.checked
 					? function(a, b) { return a.index - b.index; }
 					: function(a, b) { return b.total - a.total; })
-					.map(function(d) { return d.index; }))
-					.copy();
+					.map(function(d) { return d.index; }));
 					
 				// make delay relative to element index
 				var transition = svg.transition().duration(750),
 					delay = function(d, i) { return i * 5; };
+				
+				// redo ticks on sort 
+				xAxis
+				.tickValues(x.domain().filter(function(d, i) { return !(i % 2); }))
 				
 				transition.selectAll('g.bar')
 					.delay(delay)
@@ -384,7 +386,7 @@
 			y.domain([0, yMax]);
 			
 			// check input value
-			x.domain(vm.reachData.sort(d3.select('input').property('checked')
+			x.domain(vm.reachData.sort(d3.select('#sort-box').property('checked')
 					? function(a, b) { return a.index - b.index; }
 					: function(a, b) { return b.total - a.total; })
 					.map(function(d) { return d.index; }));
@@ -408,7 +410,7 @@
 				.attr('width', x.rangeBand())
 				// build bars from the bottom
 				.attr('y', function(d) { return y(height - d.y1); })
-				.attr("height", 0)
+				.attr('height', 0)
 					.transition()
 					.duration(600)
 					.delay(function (d, i) {
@@ -423,7 +425,7 @@
 				// set rect class to it's color for manipulation
 				.attr('class', function(d) { return d.name; })
 				.append('svg:title')
-   				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
+   				.text(function(d) { return d.name + ' impressions: ' + (d.y1 - d.y0);});
 				
 			
 			// make delay relative to element index
