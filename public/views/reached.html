@@ -25,8 +25,15 @@
 
 <div class="row">
 	<h3>Impressions</h3>
+	<!--display sort type-->
+	<p ng-switch="vm.sortBox">
+		Sorted by 
+		<span ng-switch-when="true">index</span>
+		<span ng-switch-when="false">values</span>
+	</p>
+	
 	<label class="pull-right">
-	<input id="sort-box" type="checkbox"> Sort values
+		<input ng-init="vm.sortBox = false" id="sort-box" type="checkbox" ng-model="vm.sortBox"> Sort values
 	</label>
 	<svg id="stack-chart" class="rd-chart"></svg>
 </div>
