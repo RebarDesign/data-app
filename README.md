@@ -14,8 +14,8 @@
 
 ### Data sources:
 
-[Publishing](https://jsonblob.com/api/jsonBlob/55683150e4b03d338bd86998)  
-[Reach data](http://jsonblob.com/api/jsonBlob/5208a709e4b002188ed03bdd)
+  - [Publishing](https://jsonblob.com/api/jsonBlob/55683150e4b03d338bd86998)  
+  - [Reach data](http://jsonblob.com/api/jsonBlob/5208a709e4b002188ed03bdd)
 
 ### Description:
 
@@ -181,14 +181,31 @@ Creating angular structure:
 
 Since using Express 4, the start of the app will be done using 
 
-```javascript
+  *Note* To connect from local network, change the socket connection address (localhost) in *sockets.factory.js*
+  
+  Install node modules 
+  ```javascript
+  
+  npm install
+  
+  ```
+  
+  Install bower components in public folder
+  ```javascript
+  
+  cd public
+  bower install
+  
+  ```
+  Start application
+  
+  ```javascript
   node bin/www
   
   // or
   
   npm start
-  
-```
+  ```
     
 *Note*: I am aware that the task description states the start of the app should be "node app.js" but I feel that more Express 3 functionality. It's easier to separate the modules, and combine them in www/bin, or reusing them somewhere else. 
 If it is mandatory, there would be no problem refractoring the start of the app to "node app.js"
