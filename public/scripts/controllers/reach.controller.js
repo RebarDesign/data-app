@@ -359,21 +359,29 @@
 		
 		function updateChart() {
 			
+			// get data again
 			addImpressionProperties(vm.reachData);
 			//* ghetto-debugging *// 
-			$log.log('Impressed Array', vm.reachData);
+			// $log.log('Impressed Array', vm.reachData);
 			
 			// get highest post value
 			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
 			
-			// update x domain the number of elements
+			// Scale the range of the data again 
 			x.domain(vm.reachData.map(function(d) { return d.index; }));
-			
-			// update y domain, the highest post value
 			y.domain([0, yMax]);
 			
-			// draw the bars
+			x.domain(vm.reachData.sort(d3.select('input').property('checked')
+					? function(a, b) { return a.index - b.index; }
+					: function(a, b) { return b.total - a.total; })
+					.map(function(d) { return d.index; }));
+			
+			
 			var impressions = svg.selectAll('.bar')
+				.remove();
+			
+			// draw the bars
+			impressions = svg.selectAll('.bar')
 					.data(vm.reachData)
 				.enter().append('g')
 					.attr('class', 'bar')
@@ -383,12 +391,22 @@
 				.data(function(d) { return d.impressions; })
 				.enter().append('rect')
 				.attr('width', x.rangeBand())
-				.attr('y', function(d) { return y(d.y1); })
+				// build bars from the bottom
+				.attr('y', function(d) { return y(height - d.y1); })
+				.attr("height", 0)
+					.transition()
+					.duration(600)
+					.delay(function (d, i) {
+						return i * 50;
+					})
 				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
+				.attr('y', function(d) { return y(d.y1); })
 				.style('fill', function(d) { return color(d.name); })
 				// set rect class to it's color for manipulation
 				.attr('class', function(d) { return d.name; })
 				// tooltip info
+				
+			impressions.selectAll('g.bar')
 				.append('svg:title')
    				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);});
 			
