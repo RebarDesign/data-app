@@ -18,7 +18,7 @@
 		vm.toggleAddForm 	= toggleAddForm;
 		
 		// actions
-		vm.addReach			= addReach;
+		vm.addNewData			= addNewData;
 		vm.updateChart 		= updateChart;
 		
 		// d3
@@ -449,7 +449,7 @@
 		} 
 		
 		// add item
-		function addReach(item) {
+		function addNewData(item) {
 			// close new item form
 			vm.showAddForm = false;
 			// create empty object

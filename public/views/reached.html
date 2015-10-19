@@ -4,7 +4,7 @@
 		<button type="button" class="btn btn-default btn-block" ng-click="vm.toggleAddForm()">{{vm.showAddForm ? 'Cancel' : 'Add Data' }}</button>
 		<hr>
 		<div ng-show="vm.showAddForm">
-			<form ng-submit="vm.addReach(vm.newItem)">
+			<form ng-submit="vm.addNewData(vm.newItem)">
 				<div class="form-group">
 					<label for="organicImpressions">Organic Impressions</label>
 					<input min="0" required ng-model="vm.newItem.organic" type="number" class="form-control" id="organicImpressions">
