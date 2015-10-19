@@ -1,31 +1,34 @@
-<div class="panel panel-primary">
+<form class="panel panel-primary" ng-submit="vm.addPub(vm.newItem)">
 	<div class="panel-heading">
-		<input class="form-control" type="text" ng-model="vm.newItem.id"/>
+		<input class="form-control" type="text" ng-model="vm.newItem.id" required/>
 	</div>
 	<div class="row panel-body">
 		<div class="col-md-6">
 			
 			<!--item thumbnail-->
-			<b>Media:</b>
+			<label>Media:</label>
 			<p><input type="text" ng-model="vm.newItem.content.media.url" placeholder="paste url here"/></p>
 			<!--basic item info-->
-			<b>Status:</b>
+			<label>Status:</label>
 			<p><input type="text" ng-model="vm.newItem.status"/></p>
-			<b>Type:</b>
+			<label>Type:</label>
 			<p><input type="text" ng-model="vm.newItem.content.postType"/></p>
-			<b>Scheduled:</b>
+			<label>Scheduled:</label>
 			<p><input type="text" ng-model="vm.newItem.scheduled"/></p>
 		</div>
 		
 		<div class="col-md-6">
 			
-			<b>Message:</b><br/>
+			<label>Message:</label><br/>
 			<textarea  type="text" ng-model="vm.newItem.content.message"/><br/>
-			<b>Network: </b>
+			<label>Network: </label>
 			<p><input  ng-model="vm.newItem.content.network" type="text"></p>
-			<b>Post Type: </b>
+			<label>Post Type: </label>
 			<p><input ng-model="vm.newItem.content.postType" type="text"></p>
 		</div>
 	</div>
-</div>
+	<div class="row text-center">
+		<button type="submit" class="btn btn-danger btn-lg">Add</button>
+	</div>
+</form>
 	

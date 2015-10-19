@@ -169,7 +169,9 @@ Creating angular structure:
   
   Move to published page, and implement directives
   
-  ####Finished published functionality
+  Created update chart functionality
+  
+  Will insert new item in array, then redraw the chart for effect
         
      
     
