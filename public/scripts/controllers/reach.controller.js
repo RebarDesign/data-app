@@ -13,14 +13,6 @@
 		vm.reachData = [];
 		vm.newItem = {};
 		
-		// vm.emptyItem	= {  
-		// 	'timestamp': '',
-		// 	'organic': '',
-		// 	'paid': '',
-		// 	'total': '',
-		// 	'viral': ''
-		// }
-		
 		// vm.newItem 			= vm.emptyItem;
 		vm.showAddForm 		= false;
 		vm.toggleAddForm 	= toggleAddForm;
@@ -66,40 +58,11 @@
 		var parseDate = d3.time.format('%X');
 		
 		// find our element and append size it
-		var svg = d3.select('#stack-chart')
-			.attr('width', width + margin.left + margin.right)
-			.attr('height', height + margin.top + margin.bottom)
-			.append('g')
-			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-			
-		// style the x axis
-		svg.append('g')
-			.attr('class', 'x axis')
-			.attr('transform', 'translate(0,' + height + ')')
-			.attr('font-size', '7px')
-			.call(xAxis);
-		
-		// x axis label
-		svg.append('text')
-			.attr('class', 'x axis')
-			.attr('text-anchor', 'end')
-			.attr('x', width / 2)
-			.attr('y', height+ 25)
-			.text('Post Item');
-			
-		//TODO Style the label 
-			
-			
-		// style the y axis
-		svg.append('g')
-			.attr('class', 'y axis')
-			.call(yAxis)
-			.append('text')
-			.attr('transform', 'rotate(-90)')
-			.attr('y', 6)
-			.attr('dy', '.71em')
-			.style('text-anchor', 'end')
-			.text('Impressions');
+		var svg = d3.select("#stack-chart")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 		
 		// actions
 		activate();
@@ -185,7 +148,7 @@
 		}
 		
 		function drawChart(array){
-			
+					
 			// get highest post value
 			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
 			
@@ -207,6 +170,34 @@
 			
 			// set y domain, the highest post value
 			y.domain([0, yMax]);
+			
+			// style the x axis
+			svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.attr("font-size", "7px")
+				.call(xAxis);
+			
+			// x axis label
+			svg.append("text")
+				.attr("class", "x axis")
+				.attr("text-anchor", "end")
+				.attr("x", width / 2)
+				.attr("y", height+ 25)
+				.text("Post Item");
+				
+			//TODO Style the label 
+				
+			// style the y axis
+			svg.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+				.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", 6)
+				.attr("dy", ".71em")
+				.style("text-anchor", "end")
+				.text("Impressions");
 				
 			// draw the bars
 			var impressions = svg.selectAll('.bar')
@@ -369,25 +360,63 @@
 		function updateChart(array) {
 			
 			addImpressionProperties(array);
+			//* ghetto-debugging *// 
+			$log.log('Impressed Array', array);
 			
-			var impressions = svg.selectAll('.bar')
-				.data(array, function(d) { return d; })
-				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
+			// get highest post value
+			var yMax = d3.max(array, function(d){ return Math.max(d.total); });
 			
-			impressions.selectAll('rect')
-				.data(function(d) { return d.impressions; })
-				.enter().append('rect')
+			// set x domain the number of elements
+			x.domain(array.map(function(d) { return d.index; }));
+			
+			// set y domain, the highest post value
+			y.domain([0, yMax]);
+			
+			var newImpressions = svg.selectAll('.bar')
+				.data(array, function(d) { return d; });
+				
+			newImpressions
+				.enter()
+				.append('rect');
+				
+			newImpressions
+				.attr('x', function(d) { return x(d.total); })
 				.attr('width', x.rangeBand())
 				.attr('y', function(d) { return y(d.y1); })
-				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
 				.style('fill', function(d) { return color(d.name); })
-				// set rect class to it's color for manipulation
-				.attr('class', function(d) { return d.name; })
-				// tooltip info
-				.append('svg:title')
-   				.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);})
-				.transition()
-      				.duration(750)
+				.attr('height', function(d) { return y(d.y0) - y(d.y1); });
+				
+			
+			// impressions.selectAll('rect')
+			// 	.data(function(d) { return d.impressions; })
+			// 	.enter().append('rect')
+			// 	.attr('width', x.rangeBand())
+			// 	.attr('y', function(d) { return y(d.y1); })
+			// 	.attr('height', function(d) { return y(d.y0) - y(d.y1); })
+			// 	.style('fill', function(d) { return color(d.name); })
+			// 	// set rect class to it's color for manipulation
+			// 	.attr('class', function(d) { return d.name; })
+			// 	// tooltip info
+			// 	.append('svg:title')
+   			// 	.text(function(d) { return d.name + ' Impressions: ' + (d.y1 - d.y0);})
+				   
+			// make delay relative to element index
+			var transition = svg.transition().duration(750),
+				delay = function(d, i) { return i * 5; };
+				
+			transition.selectAll('g.bar')
+				.delay(delay)
+				.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
+				
+			transition.select('.x.axis')
+				.call(xAxis)
+				.selectAll('g.bar')
+				.delay(delay);
+				
+			transition.select('.y.axis')
+				.call(yAxis)
+				.selectAll('g')
+				.delay(delay);
 				
 		}
 		
@@ -402,20 +431,31 @@
 		function addReach(item) {
 			// close new item form
 			vm.showAddForm = false;
+			// create empty object
+			var newItem = {};
 			// add item to current array
 			
 			item.total = item.organic + item.viral + item.paid;
 			item.timestamp = Date.now();
 			
+			// numbers to string
+			newItem.total		= item.total.toString();  
+			newItem.viral		= item.viral.toString();
+			newItem.organic		= item.organic.toString();
+			newItem.paid		= item.paid.toString(); 
+			
+			addReachItem(newItem, vm.reachData);
+			updateChart(vm.reachData);
+			
 			// send new itemect through socket
-			socketsFactory.emit('add:reach', { item: item });
+			// socketsFactory.emit('add:reach', { item: item });
 			//* ghetto-debugging *// 
-			$log.log('Added Element');
+			$log.log('Added Element', newItem);
 		 }
 		 
 		 function addReachItem(item , array) { 		
 			//  give item last index
-			item.index = array.length;						
+			item.index = array.length + 1;		
 			array.push(item);
 			 //* ghetto-debugging *// 
 			$log.log('Updated Array', array);
