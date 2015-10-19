@@ -3,12 +3,19 @@
 *Coding assignment for Front End Developent assesment*
 
 ## Table of Contents
-
+  1. [TL;DR](#tl-dr)
   1. [Task](#task)
   1. [Technologies](#technologies)
   1. [Approach](#approach)
   1. [How to use](#how-to-use)
-  1. [Comments](#comments)
+  
+## TL-DR
+
+This is the summary of the readme file, and it provides a short description of the creative and development process. 
+
+
+
+
 
 ## Task
 
@@ -74,16 +81,17 @@ Each published element will probably be rendered as a directive, but while using
 
 Each element has it's own action buttons, that will emit the actions through sockets to the server, which then will notify the other clients of the action and element id.
 
-    //TODO - Add more info as the work progresses
     
 ### Reach
 
 The Reach data set will be received by the reach model, through the data factory, and will then be processed in the controller. 
 
-I will attept to configure the chart parameters and rendering in the controller as well, as finding a directive online and sticking it in the project would be a bit too easy.
+The chart is created in the controller, as it is designed for single use. On socket update of added data, the updateChart function is called with the new item as a parameter.
 
-    //TODO - Add more info as the work progresses
-    
+You can add new data using the Add Data form. 
+
+The chart is default sorted by post value, but can be sorted by index, which is also the chronological order.
+
 #### Workflow
 
     git init
@@ -142,21 +150,21 @@ Creating angular structure:
   
   Created Service to get data using the api
   
-  Testing out socket functionality with a simple name emit, also testing out Express 4 + socket IO integration
-  
-  First , create a service for the sockets in the front end 
-  Add socket 'on' and 'emit' on the server side
-  
-  Server emits the same message, but with the appendix *:out* ex: delete:pub from client , delete:pub:out from server 
-  
-  Server will broadcast to all other connected clients, using socket.emit.broadcast
-  
-  Created basic ui add, update and delete functionality in controller. 
-  
-  *Note* Only the session information is a/u/d from the ui
-  
-  Moving on to Reached Data
-  
+Testing out socket functionality with a simple name emit, also testing out Express 4 + socket IO integration
+
+First , create a service for the sockets in the front end 
+Add socket 'on' and 'emit' on the server side
+
+Server emits the same message, but with the appendix *:out* ex: delete:pub from client , delete:pub:out from server 
+
+Server will broadcast to all other connected clients, using socket.emit.broadcast
+
+Created basic ui add, update and delete functionality in controller. 
+
+*Note* Only the session information is a/u/d from the ui
+
+Reached Data:
+
   Will create D3 chart in controller. 
   
   First have to get and parse the data
@@ -166,14 +174,16 @@ Creating angular structure:
   Plot the index on X and the impressions on Y
   
   Starting work on the UI elements
-  
-  Move to published page, and implement directives
-  
+
   Created update chart functionality
   
   Will insert new item in array, then redraw the chart for effect
-        
-     
+
+Published page
+  Implement directives
+
+UI
+  Simple ui and layout fixes
     
 ## How to use
 
@@ -209,12 +219,5 @@ Since using Express 4, the start of the app will be done using
     
 *Note*: I am aware that the task description states the start of the app should be "node app.js" but I feel that more Express 3 functionality. It's easier to separate the modules, and combine them in www/bin, or reusing them somewhere else. 
 If it is mandatory, there would be no problem refractoring the start of the app to "node app.js"
-  
-    //TODO - Add more info as the work progresses
-    
-## Comments
-  
-**[Back to top](#table-of-contents)**
 
-    //TODO - Add more info as the work progresses
-
+Use the UI to add / edit / delete Published items, as well as Add points on the Reach data.
