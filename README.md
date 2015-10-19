@@ -184,6 +184,9 @@ Published page
 
 UI
   Simple ui and layout fixes
+  
+Final
+  Remove debug information
     
 ## How to use
 

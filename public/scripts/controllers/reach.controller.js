@@ -18,13 +18,13 @@
 		vm.toggleAddForm 	= toggleAddForm;
 		
 		// actions
-		vm.addNewData			= addNewData;
+		vm.addNewData		= addNewData;
 		vm.updateChart 		= updateChart;
 		
 		// d3
 		var d3 = $window.d3;
 		var margin = {top: 20, right: 20, bottom: 30, left: 40},
-				width = 1200 - margin.left - margin.right,
+				width = 1000 - margin.left - margin.right,
 				height = 500 - margin.top - margin.bottom;
 				
 		// ordinal scale for X ( post index )
@@ -41,8 +41,7 @@
 			blue	= '#607D8B'; 
 			
 		// get color range 
-		var color = d3.scale.ordinal()
-    	.range([yellow, green, blue]);
+		var color = d3.scale.ordinal().range([yellow, green, blue]);
 		
 		// x axis on the bottom
 		var xAxis = d3.svg.axis()
@@ -53,7 +52,8 @@
 		var yAxis = d3.svg.axis()
 			.scale(y)
 			.orient('left')
-			.ticks(10);
+			.ticks(10)
+			.tickFormat(d3.format("s"));
 				
 		// var parseDate = d3.time.format('%X');
 		
@@ -190,7 +190,7 @@
 			// style the y axis
 			svg.append('g')
 				.attr('class', 'y axis')
-				.attr('transform', 'translate(50,0)')
+				.style('font-size', '10px')
 				.call(yAxis);
 				
 			// draw the bars
