@@ -54,7 +54,7 @@
 		// listen to deleted item
 		socketsFactory.on('delete:pub:out', function (data) {
 			//* ghetto-debugging *//
-			$log.log('Emit Delete Element: ', data.id);
+			// $log.log('Emit Delete Element: ', data.id);
 			//  delete item from array
 			vm.publishedData.splice(data.id, 1);
 		});
@@ -62,7 +62,7 @@
 		// listen to added item
 		socketsFactory.on('add:pub:out', function (data) {
 			//* ghetto-debugging *//
-			$log.log('Emit Add Element: ', data.item.id);
+			// $log.log('Emit Add Element: ', data.item.id);
 			//  add item to array
 			vm.publishedData.push(data.item);
 		});
@@ -70,7 +70,7 @@
 		// listen to updated item
 		socketsFactory.on('update:pub:out', function (data) {
 			//* ghetto-debugging *//
-			$log.log('Emit Updated Element: ', data.id);
+			// $log.log('Emit Updated Element: ', data.id);
 			//  update item in array
 			vm.publishedData[data.id] = data.item;
 		});
@@ -80,7 +80,6 @@
 		function activate() {
 			
 			return getPublishedData().then(function (data){
-				vm.publishedData = data.data;
 				//* ghetto-debugging *//
 				$log.info('OK::getPublishedData(): ',vm.publishedData);
 			});
@@ -89,7 +88,12 @@
 		
 		//  get data from factory
 		function getPublishedData() {
-			return dataFactory.getPublished();
+			return dataFactory.getPublished()
+			//  chain the promises together and take further action after the data call completes
+				.then(function(data) {
+					vm.publishedData = data.data;
+                	return vm.publishedData;
+				});
 		}
 		
 		// manage new item form
@@ -107,7 +111,7 @@
 			// emit to server
 			socketsFactory.emit('delete:pub', { id: index });
 			//* ghetto-debugging *// 
-			$log.log('Deleted Element: ', index);
+			// $log.log('Deleted Element: ', index);
 		}
 		 
 		// add item
@@ -119,7 +123,7 @@
 			// send new itemect through socket
 			socketsFactory.emit('add:pub', { item: item });
 			//* ghetto-debugging *// 
-			$log.log('Added Element: ', item.id);
+			// $log.log('Added Element: ', item.id);
 		 }
 		 
 		 function updatePub(index , item) {
@@ -128,7 +132,7 @@
 			// emit item and index
 			socketsFactory.emit('update:pub', { id: index, item: item });
 			//* ghetto-debugging *// 
-			$log.log('Updated Element: ', index);
+			// $log.log('Updated Element: ', index);
 		}
 		 
 	}
