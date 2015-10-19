@@ -464,20 +464,21 @@
 			
 			// add to array
 			addReachItem(newItem, vm.reachData);
-			// update chart
-			updateChart(vm.reachData);
 			
 			// send new itemect through socket
-			// socketsFactory.emit('add:reach', { item: item });
-			//* ghetto-debugging *// 
+			socketsFactory.emit('add:reach', { item: item });
 		 }
 		 
-		 function addReachItem(item , array) { 		
+		 function addReachItem(item) { 		
 			//  give item last index
-			item.index = array.length + 1;		
-			array.push(item);
+			item.index = vm.reachData.length + 1;		
+			// insert into array
+			vm.reachData.push(item);
+			
+			
+			updateChart(vm.reachData);
 			 //* ghetto-debugging *// 
-			$log.log('Updated Array', array);
+			// $log.log('Updated Array',  vm.reachData);
 			
 			return array;
 		 }
