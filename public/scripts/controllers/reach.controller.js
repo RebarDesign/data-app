@@ -331,13 +331,14 @@
 				.text(function(d) { return d; });
 				
 			// monitor checkbox for sort
-			d3.select('input').on('change', change);
+			
+			d3.select("#sort-box").on('change', change);
 			
 			function change() {
 
 				// delay the redraw of the elements
 				var sortTimeout = setTimeout(function() {
-					d3.select('input').property('checked', true).each(change);
+					d3.select('#sort-box').property('checked', true).each(change);
 				}, 1000);
 
 				clearTimeout(sortTimeout);
