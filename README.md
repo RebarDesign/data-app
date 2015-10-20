@@ -20,7 +20,7 @@ Then for each of these I put down the sets of goals, and the basic functions the
 I then proceded to make a diagram of how the pieces would fit together, and wrote down the enpoints and routes I would use.
 
 I also put the JSON data in a visual parser and started thinking how the data could be used, what information was relevant, and what we could discard. 
-I made some paper sketches on how the chart would have to look, and what the best way to display the data would be. As the timestamps are identical for most of the items, a choronological order would not make sense, but more the ratio of their properties, and I decided to tie the choronological display more as a secondary feature, as it was tied to the index of the elements.  
+I made some paper sketches on how the chart would have to look, and what the best way to display the data would be. As the timestamps are identical for most of the items, a choronological order would not make sense, but more the ratio of their properties, and I decided to leave the choronological display more as a secondary feature, as it was tied to the index of the elements.  
 
 Afterwards, I decided to look for the technologies I will need to use ( and the required ones ). For the server side, I decided to use ExpressJS 4. Although I was more familiar with E3.* I thought this would be a good exercise to get to know E4 a bit better. 
 I used the Express generator to save some time, and replaced the views with html instead of jade.
@@ -29,8 +29,8 @@ I created the first routes that collected the JSON data and plugged them into th
 
 I then moved on to the front end and used bower to install the required dependencies. I then retrieved using a factory the data from the server, and rendered the basic data in the view. 
 
-In the publised data section, I first displayed the data of each item, then formated it and added the actions on the ui. 
-In the reach data section, I started with a basic bar chart, and the procede to add complexity, and different ways in which the user could manipulate it. 
+In the published data section, I first displayed the data of each item, then formated it and added the actions to manipulate each element on the ui. 
+In the reach data section, I started with a basic bar chart, and the proceeded to add complexity, and different ways in which the user could manipulate it. 
 
 I ended with adding some UI elements for readibility, used the less source from bootstrap, as well as my own less style file, which I ran through a gulp task manager. 
 
