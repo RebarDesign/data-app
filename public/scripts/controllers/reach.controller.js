@@ -18,7 +18,7 @@
 		vm.toggleAddForm 	= toggleAddForm;
 		
 		// actions
-		vm.addNewData			= addNewData;
+		vm.addNewData		= addNewData;
 		vm.updateChart 		= updateChart;
 		
 		// d3
@@ -74,7 +74,7 @@
 			//* ghetto-debugging *//
 			$log.log('Emit Add Reach Element', data.item);
 			// update chart with new item
-			updateChart(data.item);
+			updateChart(vm.reachData, data.item);
 		});
 		
 		// implement concatAll();
@@ -96,7 +96,7 @@
 				vm.reachData = cleanArray(data);
 				//* ghetto-debugging *//
 				// $log.info('OK:: getReachData(): ', vm.reachData);
-				// drawChart();
+				drawChart(vm.reachData);
 			})
 		
 		}
@@ -111,14 +111,12 @@
 		// manipulate array to my liking
 		function cleanArray(array){
 			
-			//* ghetto-debugging *//
-			// $log.log('Not Cleaned ', array);
-			
-			
+			// if not empty
 			var newArray = array.filter(function (n) {
-				return n.hasOwnProperty('post_impressions');
+				for (var property in n) {
+					return n.hasOwnProperty(property);
+				}
 			}).map(function(item, index){
-				
 				var newItem = {};
 				
 				// flatten array
@@ -132,65 +130,27 @@
 				
 				return newItem;
 			});
-				
-			// remove empty objects
-			// var newArray = array.filter(function (n) {
-			// 	return n.hasOwnProperty('post_impressions');
-			// }).map(function(obj, index){ 
-				
-			// 	//* ghetto-debugging *//
-			// 	// $log.log('Obj ', obj);
-				
-			// 	// how we want the object to look
-			// 	var item = {
-			// 		index 		: 	null,
-			// 		timestamp 	:	null,
-    		// 		total 		:	null,
-			// 		organic		:	null,
-			// 		paid 		: 	null,
-			// 		viral		:	null
-			// 	};
-				
-			// 	// start index from 1
-			// 	item.index = ++index;
-				
-			// 	// if has impressions
-			// 	if (obj.post_impressions){
-			// 			// start index from 1
-			// 		// timestamp as Date so we can quanitfy it. Timestamp is same for all properties
-			// 		item.timestamp = new Date(obj.post_impressions[0].timestamp);
-					
-			// 		item.total 		= obj.post_impressions[0].value;
-			// 		item.organic 	= obj.post_impressions_organic[0].value;
-			// 		item.paid 		= obj.post_impressions_paid[0].value;
-			// 		item.viral 		= obj.post_impressions_viral[0].value;
-			// 	};
-			// 	return item;
-			// });
-			
-			//* ghetto-debugging *//
-			// $log.log('Cleaned ', newArray);
 			
 			return newArray;
 		}
 		
-		function drawChart(){
+		function drawChart(array){
 					
 			// get highest post value
-			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
+			var yMax = d3.max(array, function(d){ return Math.max(d.post_impressions); });
 			
 			//* fancy-debugging *//
 			// debugger
 			
 			
 			// divide impression properties for bar height
-			addImpressionProperties(vm.reachData);
+			addImpressionProperties(array);
 			
 			// sort by value
-			vm.reachData.sort(function(a, b) { return b.total - a.total; });
-				
+			array.sort(function(a, b) { return b.post_impressions - a.post_impressions; });
+			
 			// set x domain the number of elements
-			x.domain(vm.reachData.map(function(d) { return d.index; }));
+			x.domain(array.map(function(d) { return d.index; }));
 			
 			// set y domain, the highest post value
 			y.domain([0, yMax]);
@@ -221,7 +181,7 @@
 				
 			// draw the bars
 			var impressions = svg.selectAll('.bar')
-					.data(vm.reachData)
+					.data(array)
 				.enter().append('g')
 					.attr('class', 'bar')
 					.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
@@ -370,9 +330,9 @@
 
 				// Copy-on-write since tweens are evaluated after a delay.
 				// order either by post value or index
-				x.domain(vm.reachData.sort(this.checked
+				x.domain(array.sort(this.checked
 					? function(a, b) { return a.index - b.index; }
-					: function(a, b) { return b.total - a.total; })
+					: function(a, b) { return b.post_impressions - a.post_impressions; })
 					.map(function(d) { return d.index; }));
 					
 				// make delay relative to element index
@@ -394,27 +354,27 @@
 			}
 		}
 		
-		function updateChart(item) {
+		function updateChart(array, item) {
 			
 			//  give item last index
-			item.index = vm.reachData.length + 1;		
+			item.index = array.length + 1;		
 			// insert into array
-			vm.reachData.push(item);
+			array.push(item);
 			
 			// get data again
-			addImpressionProperties(vm.reachData);
+			addImpressionProperties(array);
 			
 			// get highest post value
-			var yMax = d3.max(vm.reachData, function(d){ return Math.max(d.total); });
+			var yMax = d3.max(array, function(d){ return Math.max(d.post_impressions); });
 			
 			// Scale the range of the data again 
-			x.domain(vm.reachData.map(function(d) { return d.index; }));
+			x.domain(array.map(function(d) { return d.index; }));
 			y.domain([0, yMax]);
 			
 			// check input value
-			x.domain(vm.reachData.sort(d3.select('#sort-box').property('checked')
+			x.domain(array.sort(d3.select('#sort-box').property('checked')
 					? function(a, b) { return a.index - b.index; }
-					: function(a, b) { return b.total - a.total; })
+					: function(a, b) { return b.post_impressions - a.post_impressions; })
 					.map(function(d) { return d.index; }));
 			
 			
@@ -424,7 +384,7 @@
 			
 			// draw the bars
 			impressions = svg.selectAll('.bar')
-					.data(vm.reachData)
+					.data(array)
 				.enter().append('g')
 					.attr('class', 'bar')
 					.attr('transform', function(d) { return 'translate(' + x(d.index) + ',0)'; });
@@ -486,32 +446,36 @@
 			// add item to current array
 			
 			item.total = item.organic + item.viral + item.paid;
-			item.timestamp = Date.now();
 			
 			// numbers to string
-			newItem.total		= item.total.toString();  
-			newItem.viral		= item.viral.toString();
-			newItem.organic		= item.organic.toString();
-			newItem.paid		= item.paid.toString(); 
+			newItem.post_impressions			= item.total.toString();  
+			newItem.post_impressions_viral		= item.viral.toString();
+			newItem.post_impressions_organic	= item.organic.toString();
+			newItem.post_impressions_paid		= item.paid.toString(); 
 			
 			$log.log('Added Element', newItem);
 			
 			// add to array
-			updateChart(newItem);
+			updateChart(vm.reachData, newItem);
 			
 			// send new itemect through socket
 			socketsFactory.emit('add:reach', { item: item });
 		 }
 		 
 		 function addImpressionProperties(array) {
-			// we only need the impression properties
-			color.domain(d3.keys(array[0]).filter(function (key) { return (key !== 'timestamp' && key !== 'index' && key !== 'total' && key !== 'impressions');}));
-
+			 
+			var labelArray = d3.keys(array[0]).sort().filter(function (key) {return (key !== 'index' && key !== 'post_impressions' && key !== 'impressions');}); // check for impressions in case of update
+			
 			array.forEach(function (d) {
 				var y0 = 0;
 				// stack the values
-				d.impressions = color.domain().map(function (name) { return { name: name, y0: y0, y1: y0 += +d[name] }; });
+				d.impressions = labelArray.map(function (name) { 
+					// process label name
+					return { name: name.split('_').pop(), y0: y0, y1: y0 += +d[name] }; 
+				});
 			});
+			
+			console.log(array);
 		 }
 		 
 	}
