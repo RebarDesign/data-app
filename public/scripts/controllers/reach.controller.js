@@ -77,6 +77,16 @@
 			updateChart(data.item);
 		});
 		
+		// implement concatAll();
+		Array.prototype.concatAll = function() {
+			var results = [];
+			this.forEach(function(subArray) {
+				results.push.apply(results, subArray);
+			});
+		
+			return results;
+		};
+		
 		////////////////
 
 		function activate() { 
@@ -86,7 +96,7 @@
 				vm.reachData = cleanArray(data);
 				//* ghetto-debugging *//
 				// $log.info('OK:: getReachData(): ', vm.reachData);
-				drawChart();
+				// drawChart();
 			})
 		
 		}
@@ -102,45 +112,61 @@
 		function cleanArray(array){
 			
 			//* ghetto-debugging *//
-			// $log.log('Cleaned ', array);
+			// $log.log('Not Cleaned ', array);
 			
-			// remove empty objects
+			
 			var newArray = array.filter(function (n) {
 				return n.hasOwnProperty('post_impressions');
-			})
-			
-			
-			newArray = newArray.map(function(obj, index){ 
+			}).map(function(item, index){
 				
-				//* ghetto-debugging *//
-				// $log.log('Obj ', obj);
+				var newItem = {};
 				
-				// how we want the object to look
-				var item = {
-					index 		: 	null,
-					timestamp 	:	null,
-    				total 		:	null,
-					organic		:	null,
-					paid 		: 	null,
-					viral		:	null
-				};
+				// flatten array
+				for (var property in item) {
+					item[property].map(function (prop) {
+						newItem[property] = prop.value;
+					});
+				}
+				// add index
+				newItem.index = ++index;
 				
-				// start index from 1
-				item.index = ++index;
-				
-				// if has impressions
-				if (obj.post_impressions){
-					// start index from 1
-					// timestamp as Date so we can quanitfy it. Timestamp is same for all properties
-					item.timestamp = new Date(obj.post_impressions[0].timestamp);
-					
-					item.total 		= obj.post_impressions[0].value;
-					item.organic 	= obj.post_impressions_organic[0].value;
-					item.paid 		= obj.post_impressions_paid[0].value;
-					item.viral 		= obj.post_impressions_viral[0].value;
-				};
-				return item;
+				return newItem;
 			});
+				
+			// remove empty objects
+			// var newArray = array.filter(function (n) {
+			// 	return n.hasOwnProperty('post_impressions');
+			// }).map(function(obj, index){ 
+				
+			// 	//* ghetto-debugging *//
+			// 	// $log.log('Obj ', obj);
+				
+			// 	// how we want the object to look
+			// 	var item = {
+			// 		index 		: 	null,
+			// 		timestamp 	:	null,
+    		// 		total 		:	null,
+			// 		organic		:	null,
+			// 		paid 		: 	null,
+			// 		viral		:	null
+			// 	};
+				
+			// 	// start index from 1
+			// 	item.index = ++index;
+				
+			// 	// if has impressions
+			// 	if (obj.post_impressions){
+			// 			// start index from 1
+			// 		// timestamp as Date so we can quanitfy it. Timestamp is same for all properties
+			// 		item.timestamp = new Date(obj.post_impressions[0].timestamp);
+					
+			// 		item.total 		= obj.post_impressions[0].value;
+			// 		item.organic 	= obj.post_impressions_organic[0].value;
+			// 		item.paid 		= obj.post_impressions_paid[0].value;
+			// 		item.viral 		= obj.post_impressions_viral[0].value;
+			// 	};
+			// 	return item;
+			// });
 			
 			//* ghetto-debugging *//
 			// $log.log('Cleaned ', newArray);
