@@ -93,10 +93,8 @@
 		
 			return getReachData().then(function (data) {
 				// clean up array
-				vm.reachData = cleanArray(data);
 				//* ghetto-debugging *//
-				// $log.info('OK:: getReachData(): ', vm.reachData);
-				drawChart(vm.reachData);
+				$log.info('OK:: getReachData(): ', data);
 			})
 		
 		}
@@ -104,6 +102,8 @@
 		function getReachData(){
 			return dataFactory.getReach()
 				.then(function(data) {
+					vm.reachData = cleanArray(data.data.response);
+					drawChart(vm.reachData);
                 	return data.data.response;
 				});
 		}
